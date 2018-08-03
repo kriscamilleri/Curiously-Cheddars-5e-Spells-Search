@@ -34,6 +34,12 @@ namespace DungeonsAndDragons
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

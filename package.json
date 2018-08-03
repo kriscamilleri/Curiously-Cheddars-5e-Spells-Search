@@ -1,0 +1,26 @@
+{
+  "name": "dungeons-and-dragons",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --config webpack.config.js --watch --progress --profile",
+    "build": "webpack --config webpack.config.js --progress --profile",
+    "prod": "webpack --env.NODE_ENV=production --config webpack.config.js --progress"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "element-ui": "^2.4.5",
+    "vue": "^2.5.16"
+  },
+  "devDependencies": {
+    "css-loader": "^1.0.0",
+    "file-loader": "^1.1.11",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.16.3",
+    "webpack-cli": "^3.1.0"
+  }
+}
