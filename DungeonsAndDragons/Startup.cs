@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson.Serialization.Conventions;
 
 namespace DungeonsAndDragons
 {
@@ -26,9 +27,16 @@ namespace DungeonsAndDragons
             services.AddMvc();
         }
 
+        public void ConfigureModels()
+        {
+            var conventionPack = new ConventionPack { new CamelCaseElementNameConvention() };
+            ConventionRegistry.Register("camelCase", conventionPack, t => true);
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -41,6 +49,9 @@ namespace DungeonsAndDragons
 
             app.UseStaticFiles();
             app.UseMvc();
+
+            ConfigureModels();
+
         }
     }
 }

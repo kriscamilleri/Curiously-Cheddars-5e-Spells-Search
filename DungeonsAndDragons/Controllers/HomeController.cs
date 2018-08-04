@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DungeonsAndDragons.Models.Collection;
+using DungeonsAndDragons.Models;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
