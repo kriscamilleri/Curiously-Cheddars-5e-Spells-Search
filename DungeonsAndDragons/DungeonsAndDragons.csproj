@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\main2.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="bin\" />
   </ItemGroup>
 
@@ -24,6 +28,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\Index.html" />
+    <None Include="wwwroot\dist\main2.js" />
   </ItemGroup>
 
 </Project>

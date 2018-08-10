@@ -19,16 +19,22 @@ namespace DungeonsAndDragons.Controllers
             return File("/index.html", "text/html");
         }
 
-        public int GetSpells()
+        public IActionResult GetSpells()
         {
-            //var connectionString = "mongodb://localhost:27017/";
-            //var client = new MongoClient(connectionString);
-            //IMongoDatabase db = client.GetDatabase("local");
-            //db = _db;
             var db = GetDatabase();
             var collection = db.GetCollection<Spells>("spells");
             var spells = collection.Find(_ => true).ToList();
-            return spells.Count;
+
+            return Ok(spells);
+        }
+
+        public IActionResult GetSpell(long index)
+        {
+            var db = GetDatabase();
+            var collection = db.GetCollection<Spells>("spells");
+            var spells = collection.Find(c => c.Index == index).ToList();
+
+            return Ok(spells);
         }
 
         public  IMongoDatabase GetDatabase()

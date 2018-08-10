@@ -3,16 +3,21 @@
 <head>
     <meta charset="utf-8" />
     <title>The Curiously Cheddar DnD PlaySpace</title>
+    <!--<script src="/dist/main2.js"></script>-->
+    <!--<script src="/dist/vue.min.js"></script>-->
+</head>
+<body>
+    <h1>
+        RAMBOOZLE!
+    </h1>
+    <div id="app">
+        <button-counter></button-counter>
+    </div>
     <environment names="Development">
         <script src="/dist/main.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="/dist/main.js" asp-append-version="true"></script>
     </environment>
-</head>
-<body>
-    <h1>
-        RAMBOOZLE!
-    </h1>
 </body>
 </html>

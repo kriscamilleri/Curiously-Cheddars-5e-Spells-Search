@@ -1,0 +1,20 @@
+{
+  "name": "dungeons_and_dragons",
+  "version": "1.0.0",
+  "description": "dungeons and dragons spell search, selection and printing.",
+  "author": "Kris Camilleri <kris.camilleri@gmail.com>",
+  "private": true,
+  "dependencies": {
+    "vue-cli": "^2.9.6"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

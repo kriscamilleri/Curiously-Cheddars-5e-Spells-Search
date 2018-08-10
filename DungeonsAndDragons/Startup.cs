@@ -47,8 +47,8 @@ namespace DungeonsAndDragons
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseStaticFiles();
-            app.UseMvc();
+            //app.UseStaticFiles();
+            //app.UseMvc();
 
             ConfigureModels();
 
