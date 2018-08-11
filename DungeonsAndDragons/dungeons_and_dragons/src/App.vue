@@ -1,40 +1,57 @@
 <template>
   <div id="app">
-    <el-row>
-      <h1>{{ msg }}</h1>
-      <el-col :span="6">
-        test
-      </el-col>
-      <el-col  :span="18"> 
-        <el-col v-for="r in 10" :xs="12" :sm="12" :lg="8" :key="r">
-          <card-container></card-container>
-        </el-col>
-      </el-col>
-    </el-row>
+    <b-container fluid class="bv-example-row m-1">
+      <!--<h3>{{title}}</h3>-->
+      <b-row align-h="center">
+        <spell-card v-for="r in spells" :spell=r :key="spells.index"   class="m-2"></spell-card>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
-  import CardContainer from './CardContainer.vue'
+  import SpellCard from './SpellCard.vue'
 
   export default {
-    components: {CardContainer},
+    components: {
+      SpellCard
+    },
     data() {
       return {
-        msg: "DnD Search Master"
+        title: "DnD Search Master",
+        spells: []
       }
+    },
+    //ready: function () {
+    //  this.fetchSpells();
+    //},
+    //methods: {
+    //  fetchSpells: function () {
+    //    let spells = [];
+
+    //  }
+    //},
+    mounted() {
+      fetch('http://localhost:56583/api/values/getspells')
+        .then(response => response.json())
+        .then(data => {
+          this.spells = data;
+        })
     }
   }
 
 </script>
 
 <style>
-  .el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
-    margin: 1rem;
-    box-shadow: 0 .075rem .25rem rgba(0,0,0,.075);
+  .card {
+    min-width: 250px;
+    max-width: 350px;
+    max-width: 0.1rem;
   }
-
-
+  /*.card-columns {
+    display: inline-block;
+    column-break-inside: avoid;
+  }*/
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
