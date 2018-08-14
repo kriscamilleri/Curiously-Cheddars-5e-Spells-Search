@@ -15,20 +15,20 @@ namespace DungeonsAndDragons.Controllers
         private string _connectionString = "mongodb://localhost:27017/local";
 
         [HttpGet]
-        public IEnumerable<Spells> GetSpells()
+        public IEnumerable<SpellsExtended> GetSpells()
         {
             var db = GetDatabase();
-            var collection = db.GetCollection<Spells>("spells");
+            var collection = db.GetCollection<SpellsExtended>("spells_extended");
             var spells = collection.Find(_ => true).ToList();
             var spellsOrdered = spells.OrderBy(c => c.Level);
             return spellsOrdered;
         }
 
         [HttpGet]
-        public IEnumerable<Spells> GetSpell(long index)
+        public IEnumerable<SpellsExtended> GetSpell(long index)
         {
             var db = GetDatabase();
-            var collection = db.GetCollection<Spells>("spells");
+            var collection = db.GetCollection<SpellsExtended>("spells_extended");
             var spell = collection.Find(c => c.Index == index).ToList();
 
             return spell;

@@ -19,7 +19,7 @@
               </span>
             </h4>
             <h6 class="card-subtitle mb-2 text-muted" v-html="formattedSubtitle"></h6>
-      <p class="card-text text-sm " align-h="start">
+      <p class="card-text text-sm text-muted" align-h="start">
         <b-collapse :id="'descSpell'+spell.index" class="details-text  text-justify">
           <br />
           <span v-html="formattedDetails"></span>
@@ -34,23 +34,27 @@ export default {
   name: "SpellCard",
   props: {
     spell: {
-      index: null,
-      name: null,
-      desc: null,
-      higherLevel: null,
-      page: null,
-      range: null,
-      components: null,
-      material: null,
-      ritual: null,
-      duration: null,
-      concentration: null,
-      castingTime: null,
-      level: null,
-      school: null,
-      classes: null,
-      subclasses: null,
-      url: null
+      index: 0,
+      name: "",
+      desc: "",
+      higherLevel: "",
+      range: "",
+      ritual: false,
+      duration: "",
+      concentration: false,
+      castingTime: "",
+      level: 0,
+      school: "",
+      class: [],
+      levelDesc: "",
+      classDesc: "",
+      rangeDesc: "",
+      componentDesc: "",
+      verbal: false,
+      material: false,
+      somatic: false,
+      source: "",
+      page: 0
     }
   },
   methods: {
@@ -90,65 +94,44 @@ export default {
       return description + classes + components;
     },
     formattedClasses: function() {
-      let classArr = [];
-      this.spell.classes.forEach(function(el) {
-        classArr.push(el.name);
-      });
+      let classArr = this.spell.class;
+
       let classes =
-        "<p><strong>Classes: </strong>" + classArr.join(", ") + ".</p>";
+        "<strong>Classes</strong><p>" + classArr.join(", ") + ".</p>";
 
       return classes;
     },
     formattedDescription: function() {
-      let description = (
-        "<p><strong>Description: </strong>" +
-        this.spell.desc.join("</p></p>") +
-        "</p>"
-      ).replace("â€™", "'");
+      let description = "<strong>Description </strong>" + this.spell.desc;
       return description;
     },
     formattedDuration: function() {
-      return "<strong>D&nbsp;</strong>" + this.spell.duration;
+      let result = "<strong>D&nbsp;</strong>";
+      if (this.spell.concentration && this.spell.duration.length > 0) {
+        let cleanedDuration = this.spell.duration;
+        cleanedDuration = cleanedDuration.replace("Concentration, ", "");
+        result += cleanedDuration[0].toUpperCase() + cleanedDuration.slice(1);
+      } else {
+        result += this.spell.duration;
+      }
+      return result; // capitalize first letter
     },
     formattedCastingTime: function() {
       return "<strong>C&nbsp;</strong>" + this.spell.castingTime;
     },
     formattedComponents: function() {
       let array = [];
-      let components = this.spell.components;
-      for (let i = 0; i < components.length; i++) {
-        let componentString;
-
-        switch (components[i]) {
-          case "V":
-            componentString = "Verbal";
-            break;
-          case "S":
-            componentString = "Somatic";
-            break;
-          case "M":
-            componentString = this.spell.material
-              ? this.spell.material.substring(0, this.spell.material.length - 1)
-              : ""; //remove trailng fullstop
-            break;
-          case "F":
-            componentString = "Focus";
-            break;
-          case "DF":
-            componentString = "Divine Focus";
-            break;
-          case "XP":
-            componentString = "XP Cost";
-            break;
-        }
-
-        array.push(componentString);
+      if (this.spell.somatic) {
+        array.push("Somatic");
+      }
+      if (this.spell.verbal) {
+        array.push("Verbal");
+      }
+      if (this.spell.material) {
+        array.push("Material");
       }
 
-      let result =
-        "<p><strong>Components: </strong>" + array.join(", ") + ".</p>";
-
-      return result;
+      return "<strong>Components</strong><p>" + array.join(", ") + ".</p>";
     },
     classColor: function() {
       return "secondary";
