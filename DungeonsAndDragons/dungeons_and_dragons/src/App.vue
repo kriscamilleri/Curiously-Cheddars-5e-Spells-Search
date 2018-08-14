@@ -3,11 +3,7 @@
     <spell-nav-bar @sideBarOn="captureSideBarStatus" @searchText="captureSearchText" :sideBarOn="sideBarOn"></spell-nav-bar>
     <div id="wrapper" :class="{ toggled: sideBarOn }">
       <div id="sidebar-wrapper" class="bg-light">
-          <b-row>
-            <b-col size="12">
-              <h3 class="my-2 mt-4">Filters</h3>
-            </b-col>
-          </b-row>
+          <spell-filters></spell-filters>
       </div>
       <div  id="page-content-wrapper">
         <b-container fluid class="bv-example-row m-1">
@@ -23,18 +19,30 @@
 <script>
 import SpellNavBar from "./SpellNavBar.vue";
 import SpellCard from "./SpellCard.vue";
+import SpellFilters from "./SpellFilters.vue";
 
 export default {
   components: {
     SpellCard,
-    SpellNavBar
+    SpellNavBar,
+    SpellFilters
   },
   data() {
     return {
       title: "DnD Search Master",
       sideBarOn: false,
       searchText: "",
-      spells: []
+      spells: [],
+      clases: [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     };
   },
   computed: {
