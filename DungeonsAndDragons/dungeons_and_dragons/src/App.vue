@@ -3,7 +3,7 @@
     <spell-nav-bar @sideBarOn="captureSideBarStatus" @searchText="captureSearchText" :sideBarOn="sideBarOn"></spell-nav-bar>
     <div id="wrapper" :class="{ toggled: sideBarOn }">
       <div id="sidebar-wrapper" class="bg-light">
-          <spell-filters></spell-filters>
+          <spell-filters  @classFilters="captureClassFilters" :classFilters="classFilters" ></spell-filters>
       </div>
       <div  id="page-content-wrapper">
         <b-container fluid class="bv-example-row m-1">
@@ -32,34 +32,59 @@ export default {
       title: "DnD Search Master",
       sideBarOn: false,
       searchText: "",
+      classFilters: [
+        "bard",
+        "cleric",
+        "druid",
+        "paladin",
+        "ranger",
+        "sorcerer",
+        "warlock",
+        "wizard"
+      ],
       spells: [],
-      clases: [
-        "Bard",
-        "Cleric",
-        "Druid",
-        "Paladin",
-        "Ranger",
-        "Sorcerer",
-        "Warlock",
-        "Wizard"
+      classes: [
+        "bard",
+        "cleric",
+        "druid",
+        "paladin",
+        "ranger",
+        "sorcerer",
+        "warlock",
+        "wizard"
       ]
     };
   },
   computed: {
     filteredSpells: function() {
       var self = this;
-      if (!this.searchText) {
-        return this.spells;
+      let spells = this.spells;
+      if (this.searchText) {
+        spells = this.spells.filter(function(spell) {
+          let lowerText = self.searchText.toLowerCase();
+          return (
+            spell.name
+              .toLowerCase()
+              .trim()
+              .indexOf(lowerText) > -1
+          );
+        });
       }
-      return this.spells.filter(function(spell) {
-        let lowerText = self.searchText.toLowerCase();
-        return (
-          spell.name
-            .toLowerCase()
-            .trim()
-            .indexOf(lowerText) > -1
-        );
+
+      let classFilters = this.classFilters.map(function(value) {
+        return value[0].toUpperCase() + value.slice(1);
       });
+
+      if (this.classFilters.length != this.classes.length) {
+        spells = spells.filter(function(spell) {
+          let x = spell.class;
+          let intersection = x.filter(n => classFilters.includes(n));
+          if (intersection.length > 0) {
+            return spell;
+          }
+        });
+      }
+      return spells;
     }
   },
   methods: {
@@ -68,6 +93,9 @@ export default {
     },
     captureSearchText(searchText) {
       this.searchText = searchText;
+    },
+    captureClassFilters(value) {
+      this.classFilters = value;
     }
   },
   mounted() {

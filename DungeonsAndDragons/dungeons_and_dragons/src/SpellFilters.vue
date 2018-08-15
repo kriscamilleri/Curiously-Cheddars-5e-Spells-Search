@@ -5,44 +5,43 @@
         </b-col>
         <b-col sm="12">
             <b-form-group label="<strong>Classes</strong>">
-                <b-form-checkbox-group v-model="classFilters"  :options="classOptions">
+                <b-form-checkbox-group v-model="selectedClassFilters"  :options="getFilterOptions">
                 </b-form-checkbox-group>
             </b-form-group>
         </b-col>
-        
     </b-row>
 </template>
 
 <script>
 export default {
   name: "SpellFilters",
+  props: {
+    classFilters: Array
+  },
   data: function() {
     return {
-      classFilters: [
-        "bard",
-        "cleric",
-        "druid",
-        "paladin",
-        "ranger",
-        "sorcerer",
-        "warlock",
-        "wizard"
-      ],
-      classOptions: [
-        { text: "Bard", value: "bard" },
-        { text: "Cleric", value: "cleric" },
-        { text: "Druid", value: "druid" },
-        { text: "Paladin", value: "paladin" },
-        { text: "Ranger", value: "ranger" },
-        { text: "Sorcerer", value: "sorcerer" },
-        { text: "Warlock", value: "warlock" },
-        { text: "Wizard", value: "wizard" }
-      ]
+      localClassFilters: this.classFilters,
+      selectedClassFilters: this.classFilters
     };
   },
-  methods: {
-    toggleClassFilters: function() {
-      this.$emit("classFilters", this.classFilters);
+  computed: {
+    getFilterOptions: function() {
+      let arr = [];
+      for (let i = 0; i < this.localClassFilters.length; i++) {
+        let row = {
+          text:
+            this.localClassFilters[i][0].toUpperCase() +
+            this.localClassFilters[i].slice(1),
+          value: this.localClassFilters[i]
+        };
+        arr.push(row);
+      }
+      return arr;
+    }
+  },
+  watch: {
+    selectedClassFilters(val) {
+      this.$emit("classFilters", val);
     }
   }
 };
