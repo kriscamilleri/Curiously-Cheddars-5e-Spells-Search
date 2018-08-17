@@ -2,12 +2,21 @@
   <div id="app">
     <spell-nav-bar @sideBarOn="captureSideBarStatus" @searchText="captureSearchText" :sideBarOn="sideBarOn"></spell-nav-bar>
     <div id="wrapper" :class="{ toggled: sideBarOn }">
-      <div id="sidebar-wrapper" class="bg-light">
-          <spell-filters  @classFilters="captureClassFilters" :classFilters="classFilters" ></spell-filters>
+      <div id="sidebar-wrapper" class="bg-light ">
+          <spell-filters  
+            :classFilters="classFilters"
+            @classFilters="captureClassFilters"
+            :levelFilters="levelFilters"
+            @levelFilters="captureLevelFilters"
+            :sourceFilters="sourceFilters"
+            @sourceFilters="captureSourceFilters"
+            :schoolFilters="schoolFilters"
+            @schoolFilters="captureSchoolFilters"
+          ></spell-filters>
       </div>
       <div  id="page-content-wrapper">
         <b-container fluid class="bv-example-row m-1">
-          <b-row align-h="center">
+          <b-row  align-h="center">
             <spell-card v-for="r in filteredSpells" :spell=r :key="r.index" class="m-2"></spell-card>
           </b-row>
         </b-container>
@@ -32,6 +41,7 @@ export default {
       title: "DnD Search Master",
       sideBarOn: false,
       searchText: "",
+      spells: [],
       classFilters: [
         "bard",
         "cleric",
@@ -42,7 +52,18 @@ export default {
         "warlock",
         "wizard"
       ],
-      spells: [],
+      sourceFilters: ["EE PC", "PHB", "SCAG", "UA TOBM"],
+      levelFilters: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      schoolFilters: [
+        "Abjuration",
+        "Conjuration",
+        "Divination",
+        "Enchantment",
+        "Evocation",
+        "Illusion",
+        "Necromancy",
+        "Transmutation"
+      ],
       classes: [
         "bard",
         "cleric",
@@ -52,16 +73,58 @@ export default {
         "sorcerer",
         "warlock",
         "wizard"
+      ],
+      levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      sources: ["EE PC", "PHB", "SCAG", "UA TOBM"],
+      schools: [
+        "Abjuration",
+        "Conjuration",
+        "Divination",
+        "Enchantment",
+        "Evocation",
+        "Illusion",
+        "Necromancy",
+        "Transmutation"
       ]
     };
   },
   computed: {
     filteredSpells: function() {
-      var self = this;
+      var searchText = this.searchText;
       let spells = this.spells;
-      if (this.searchText) {
-        spells = this.spells.filter(function(spell) {
-          let lowerText = self.searchText.toLowerCase();
+
+      spells = this.filterSearch(spells, searchText);
+      spells = this.filterClasses(spells);
+      spells = this.filterLevels(spells);
+      spells = this.filterSources(spells);
+      spells = this.filterSchools(spells);
+
+      return spells;
+    }
+  },
+  methods: {
+    captureSideBarStatus(sideBarOn) {
+      this.sideBarOn = sideBarOn;
+    },
+    captureSearchText(searchText) {
+      this.searchText = searchText;
+    },
+    captureClassFilters(value) {
+      this.classFilters = value;
+    },
+    captureLevelFilters(value) {
+      this.levelFilters = value;
+    },
+    captureSourceFilters(value) {
+      this.sourceFilters = value;
+    },
+    captureSchoolFilters(value) {
+      this.schoolFilters = value;
+    },
+    filterSearch(spells, searchText) {
+      if (searchText.length > 0) {
+        spells = spells.filter(function(spell) {
+          let lowerText = searchText.toLowerCase();
           return (
             spell.name
               .toLowerCase()
@@ -70,7 +133,9 @@ export default {
           );
         });
       }
-
+      return spells;
+    },
+    filterClasses(spells) {
       let classFilters = this.classFilters.map(function(value) {
         return value[0].toUpperCase() + value.slice(1);
       });
@@ -85,17 +150,45 @@ export default {
         });
       }
       return spells;
-    }
-  },
-  methods: {
-    captureSideBarStatus(sideBarOn) {
-      this.sideBarOn = sideBarOn;
     },
-    captureSearchText(searchText) {
-      this.searchText = searchText;
+    filterLevels(spells) {
+      let levelFilters = this.levelFilters;
+      if (levelFilters.length != this.levels.length) {
+        spells = spells.filter(function(spell) {
+          let x = spell.level;
+          let intersection = levelFilters.includes(x);
+          if (intersection) {
+            return spell;
+          }
+        });
+      }
+      return spells;
     },
-    captureClassFilters(value) {
-      this.classFilters = value;
+    filterSources(spells) {
+      let sourceFilters = this.sourceFilters;
+      if (sourceFilters.length != this.sources.length) {
+        spells = spells.filter(function(spell) {
+          let x = spell.source;
+          let intersection = sourceFilters.includes(x);
+          if (intersection) {
+            return spell;
+          }
+        });
+      }
+      return spells;
+    },
+    filterSchools(spells) {
+      let schoolFilters = this.schoolFilters;
+      if (schoolFilters.length != this.schools.length) {
+        spells = spells.filter(function(spell) {
+          let x = spell.school;
+          let intersection = schoolFilters.includes(x);
+          if (intersection) {
+            return spell;
+          }
+        });
+      }
+      return spells;
     }
   },
   mounted() {
@@ -109,11 +202,6 @@ export default {
 </script>
 
 <style>
-.card {
-  min-width: 250px;
-  max-width: 350px;
-  max-width: 0.1rem;
-}
 /*.card-columns {
     display: inline-block;
     column-break-inside: avoid;
@@ -122,7 +210,6 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
@@ -152,27 +239,25 @@ body {
 
 .nav-button a {
   color: #fff !important;
+  background-color: #ff4136;
+  border-color: #ff4136;
+  box-shadow: inset 0 0 0 rgba(255, 255, 255, 0.15),
+    0 1px 1px rgba(72, 72, 72, 0.07);
   display: inline-block;
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   border: 1px solid transparent;
-  padding-top: 0.375rem;
-  padding-right: 0.75rem !important;
-  padding-bottom: 0.375rem;
-  padding-left: 0.75rem !important;
+  padding: 0.375rem 1rem;
   font-size: 1rem;
   line-height: 1.5;
-  border-radius: 0.25rem;
+  border-radius: 0.15rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  margin-bottom: 0 !important;
-  margin-top: 0 !important;
+  font-family: "News Cycle", "Arial Narrow Bold", sans-serif;
+  font-weight: 700;
 }
 
 #wrapper {
@@ -188,17 +273,18 @@ body {
 }
 
 #sidebar-wrapper {
-  z-index: 1000;
+  z-index: 1029;
   position: fixed;
   right: 380px;
   width: 0;
   height: 100%;
   margin-right: -380px;
   overflow-y: auto;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  margin-top: -10px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -259,6 +345,21 @@ body {
   #wrapper.toggled #page-content-wrapper {
     position: relative;
     margin-left: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+    font-weight: 400;
   }
 }
 </style>

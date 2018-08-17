@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import App from './App.vue'
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Vue from "vue";
+import App from "./App.vue";
+import BootstrapVue from "bootstrap-vue";
+import "./bootstrap-theme/bootstrap.min.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 Vue.use(BootstrapVue);
 //import ElementUI  from 'element-ui'
@@ -11,11 +11,8 @@ Vue.use(BootstrapVue);
 //Vue.use(ElementUI)
 
 new Vue({
-  name: 'app',
-  components: {
-
-  },
-  el: '#app',
+  name: "app",
+  components: {},
+  el: "#app",
   render: h => h(App)
-})
-
+});
