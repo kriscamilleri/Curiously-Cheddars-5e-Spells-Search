@@ -20,6 +20,7 @@ namespace DungeonsAndDragons
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                   .UseKestrel()
+                  .UseWebRoot("dungeons_and_dragons") // name it whatever you want
                   .UseContentRoot(Directory.GetCurrentDirectory())
                   .UseStartup<Startup>()
                   .Build();
