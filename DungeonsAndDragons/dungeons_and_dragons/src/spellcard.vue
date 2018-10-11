@@ -133,8 +133,10 @@ export default {
       if (this.spell.material) {
         array.push("Material");
       }
-
-      return "<strong>Components</strong><p>" + array.join(", ") + ".</p>";
+      if(array.length > 0){
+        return "<strong>Components</strong><p>" + array.join(", ") + ".</p>";
+      }
+      return '';
     },
     classColor: function() {
       return "muted";
