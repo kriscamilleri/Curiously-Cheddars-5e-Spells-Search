@@ -40,7 +40,7 @@ namespace DungeonsAndDragons.Controllers
         }
 
         [HttpGet]
-        public string AddSpell()
+        public string AddSpell(SpellFormSubmit form)
         {
             var db = GetDatabase();
             var collection = db.GetCollection<SpellsExtended>("spells_extended");
