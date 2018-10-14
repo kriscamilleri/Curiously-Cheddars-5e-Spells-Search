@@ -17,11 +17,18 @@ namespace DungeonsAndDragons.Helpers
             _connectionString = connectionString;
         }
 
+        public void InsertSpell(SpellsExtended spell)
+        {
+            var db = GetDatabase();
+            var result = db.GetCollection<SpellsExtended>("spells_extended");
+            result.InsertOne(spell);
+        }
+
         public long GetNextSpellIndex()
         {
             var db = GetDatabase();
             var collection = db.GetCollection<SpellsExtended>("spells_extended");
-            return collection.CountDocuments(new BsonDocument());
+            return collection.AsQueryable<SpellsExtended>().Count() + 1; 
         }
 
         public IEnumerable<SpellsExtended> GetSpells()

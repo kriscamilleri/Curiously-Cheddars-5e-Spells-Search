@@ -30,16 +30,19 @@ namespace DungeonsAndDragons.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddSpell([FromBody]SpellFormSubmit data)
-        //public IActionResult AddSpell(string classInput, string nameInput, int levelsInput, string descInput, string higherLevelsInput, string rangeInput, string durationInput, string castingTimeInput, string schoolInput, bool somaticInput, bool verbalInput, bool ritualInput, string materialCostInput, string materialInput, int pageInput, bool concentrationInput)
+        public IActionResult AddSpell([FromBody]SpellFormSubmit form)
         {
-            var x = HttpContext.Request.Body;
-            var collection = db.GetCollection<SpellsExtended>("spells_extended");
-            
-            //collection.InsertOne(spell);
+            try
+            {
+                var spell = form.GenerateSpellExtended(_dbHelper);
+                _dbHelper.InsertSpell(spell);
+                return Content($"Success! Added the spell {spell.Name}. Spell index: {spell.Index}.", "application/json");
+            }
+            catch (Exception e)
+            {
+                return Content("Error." + e.GetFullMessage(), "application/json");
+            }
 
-            return RedirectToAction("Home", "Index");
         }
-
     }
 }
