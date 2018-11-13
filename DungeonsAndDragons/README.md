@@ -1,21 +1,12 @@
-# dungeons_and_dragons
+# Curiously Cheddars 5e Spell Search
 
-> dungeons and dragons spell search, selection and printing.
+> Dungeons and dragons 5e spell browser, search and filter.
 
-## Build Setup
+# developer info
 
-``` bash
-# install dependencies
-npm install
+> Backend built using .NET Core and MongoDB. Frontend written in Vue using webpack and npm. 
 
-# serve with hot reload at localhost:8080
-npm run dev
+# motivation
 
-# build for production with minification
-npm run build
+> There didn't yet a exist a mobile friendly spell search. Nor one that worked well if the internet died after page load. So I made one. 
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

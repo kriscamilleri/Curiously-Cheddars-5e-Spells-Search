@@ -193,6 +193,7 @@ export default {
   },
   mounted() {
     fetch("http://localhost:5000/api/values/getspells")
+    //fetch("http://curiouslycheddar.com/api/values/getspells")
       .then(response => response.json())
       .then(data => {
         this.spells = data;

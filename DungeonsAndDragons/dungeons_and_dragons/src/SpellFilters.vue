@@ -238,4 +238,5 @@ export default {
 .faux-column.row .custom-control {
   margin-right: 0px;
 }
+
 </style>
