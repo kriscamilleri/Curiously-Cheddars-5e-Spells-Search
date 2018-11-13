@@ -14,6 +14,7 @@
             @schoolFilters="captureSchoolFilters"
           ></spell-filters>
       </div>
+      <add-spell></add-spell>
       <div  id="page-content-wrapper">
         <b-container fluid class="bv-example-row m-1">
           <b-row  align-h="center">
@@ -28,11 +29,13 @@
 <script>
 import SpellNavBar from "./SpellNavBar.vue";
 import SpellCard from "./SpellCard.vue";
+import AddSpell from "./AddSpell.vue";
 import SpellFilters from "./SpellFilters.vue";
 
 export default {
   components: {
     SpellCard,
+    AddSpell,
     SpellNavBar,
     SpellFilters
   },
@@ -232,33 +235,6 @@ a {
 /* SIDEBAR */
 body {
   overflow-x: hidden;
-}
-
-.nav-button {
-  border-radius: 0.25rem;
-}
-
-.nav-button a {
-  color: #fff !important;
-  background-color: #ff4136;
-  border-color: #ff4136;
-  box-shadow: inset 0 0 0 rgba(255, 255, 255, 0.15),
-    0 1px 1px rgba(72, 72, 72, 0.07);
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: 0.375rem 1rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.15rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  font-family: "News Cycle", "Arial Narrow Bold", sans-serif;
-  font-weight: 700;
 }
 
 #wrapper {
