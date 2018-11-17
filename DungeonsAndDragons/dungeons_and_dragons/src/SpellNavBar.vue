@@ -1,8 +1,8 @@
 <template>
   <b-navbar toggleable="md" type="light" variant="white" class="bg-light fixed-top ">
     <b-navbar-brand href="#">CC's Spell Search</b-navbar-brand>
-    <b-navbar-toggle target="nav_collapse" class="float-right"></b-navbar-toggle>
-    <b-collapse is-nav id="nav_collapse">
+    <b-navbar-toggle target="nav_collapse" class="float-right navbar-toggle"></b-navbar-toggle>
+    <b-collapse is-nav id="nav_collapse" class="">
       <b-navbar-nav>
         <b-nav-item href="https://github.com/kriscamilleri/Curiously-Cheddars-5e-Spells-Search" class="float-left">Github</b-nav-item>
       </b-navbar-nav>
@@ -19,76 +19,84 @@
 </template>
 
 <script>
-export default {
-  name: "SpellNavBar",
-  props: {
-    sideBarOn: false
-  },
-  data: function() {
-    return {
-      localSearchText: ""
-    };
-  },
-  methods: {
-    toggleSideBar: function() {
-      this.$emit("sideBarOn", !this.sideBarOn);
+  export default {
+    name: "SpellNavBar",
+    props: {
+      sideBarOn: false
     },
-    toggleSearch: function() {
-      this.$emit("searchText", this.localSearchText);
+    data: function () {
+      return {
+        localSearchText: ""
+      };
+    },
+    methods: {
+      toggleSideBar: function () {
+        this.$emit("sideBarOn", !this.sideBarOn);
+      },
+      toggleSearch: function () {
+        this.$emit("searchText", this.localSearchText);
+      }
     }
-  }
-};
+  };
 </script>
 
 <style>
-/*Necessary to left align text when nav-collapse is open*/
-
-@media (max-width: 767px) {
-  #nav_collapse a {
-    margin-top: 0.5rem;
-    margin-left: 0.5rem;
-    margin-bottom: 0.5rem;
-    float: left;
+  /*Necessary to left align text when nav-collapse is open*/
+  @media (max-width: 767px) {
+    #nav_collapse a {
+      margin-top: 0.5rem;
+      margin-left: 0.5rem;
+      margin-bottom: 0.5rem;
+      float: left;
+    }
   }
-}
 
-.input-group {
-  max-width: 20.8rem;
-  margin-right: 0.5rem;
-}
+  @media (max-width: 767px) {
+    #nav_collapse {
+      background: white;
+      width: 100%;
+      min-width: 100%;
+      margin-left: -10px;
+      padding: 10px;
+      border-radius: 0.25rem;
+      box-shadow: 0 .125rem .25rem rgba(72,72,72,.075)!important;
+      border: 1px solid #e4e5e7 !important
+    }
+  }
 
-.navbar-brand {
-  margin-left: 0.5rem;
-}
+  .input-group {
+    max-width: 20.8rem;
+    margin-right: 0.5rem;
+  }
 
-.navbar {
-  max-height: 3.75rem;
-}
+  .navbar-brand {
+    margin-left: 0.5rem;
+  }
+
+  .navbar {
+    max-height: 3.75rem;
+  }
 
 
-.nav-button {
-  border-radius: 0.25rem;
-}
+  .nav-button {
+    border-radius: 0.25rem;
+  }
 
-.nav-button a {
-  color: #fff !important;
-  box-shadow: inset 0 0 0 rgba(255, 255, 255, 0.15),
-    0 1px 1px rgba(72, 72, 72, 0.07);
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: 0.375rem 1rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.15rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  font-family: "News Cycle", "Arial Narrow Bold", sans-serif;
-  font-weight: 700;
-}
-
+    .nav-button a {
+      color: #fff !important;
+      display: inline-block;
+      font-weight: 400;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      user-select: none;
+      border: 1px solid transparent;
+      padding: 0.375rem 1rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: 0.15rem;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      font-family: "News Cycle", "Arial Narrow Bold", sans-serif;
+      font-weight: 700;
+    }
 </style>

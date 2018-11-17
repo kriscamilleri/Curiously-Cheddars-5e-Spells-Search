@@ -1,28 +1,28 @@
 <template>
   <div id="app">
+    <meta name="viewport" content="width=device-width, user-scalable=false;" />
+
     <spell-nav-bar @sideBarOn="captureSideBarStatus" @searchText="captureSearchText" :sideBarOn="sideBarOn"></spell-nav-bar>
     <div id="wrapper" :class="{ toggled: sideBarOn }">
       <div id="sidebar-wrapper" class="bg-light ">
-          <spell-filters  
-            :classFilters="classFilters"
-            @classFilters="captureClassFilters"
-            :levelFilters="levelFilters"
-            @levelFilters="captureLevelFilters"
-            :sourceFilters="sourceFilters"
-            @sourceFilters="captureSourceFilters"
-            :schoolFilters="schoolFilters"
-            @schoolFilters="captureSchoolFilters"
-          ></spell-filters>
+        <spell-filters :classFilters="classFilters"
+                       @classFilters="captureClassFilters"
+                       :levelFilters="levelFilters"
+                       @levelFilters="captureLevelFilters"
+                       :sourceFilters="sourceFilters"
+                       @sourceFilters="captureSourceFilters"
+                       :schoolFilters="schoolFilters"
+                       @schoolFilters="captureSchoolFilters"></spell-filters>
       </div>
       <add-spell></add-spell>
-      <div  id="page-content-wrapper">
+      <div id="page-content-wrapper">
         <b-container fluid class="bv-example-row m-1">
-          <b-row  align-h="center">
+          <b-row align-h="center">
             <spell-card v-for="r in filteredSpells" :spell=r :key="r.index" class="m-2"></spell-card>
           </b-row>
         </b-container>
+      </div>
     </div>
-  </div> 
   </div>
 </template>
 
