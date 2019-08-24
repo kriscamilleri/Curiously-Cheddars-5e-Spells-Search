@@ -27,7 +27,7 @@
             <spell-card v-for="r in filteredSpells" :spell="r" :key="r.index" class="m-2"></spell-card>
           </b-row>
           <div v-if="dataLoading" class="text-center p-5">
-            <h2>Loading data</h2>
+            <h2>Loading data...</h2>
           </div>
         </b-container>
       </div>
@@ -206,7 +206,7 @@ export default {
   },
   mounted() {
     let self = this;
-    fetch("https://dreamy-mayer-b15b5b.netlify.com/literuje.json")
+    fetch("https://vigilant-montalcini-5f08ae.netlify.com/literuje.json")
       .then(response => {
         if (!response.ok) {
           throw new Error("HTTP error " + response.status);
@@ -219,7 +219,7 @@ export default {
           data[i].index = i;
           parsedData.push(data[i]);
         }
-        console.log(data);
+        // console.log(data);
         this.spells = parsedData;
         this.dataLoading = false;
       });
