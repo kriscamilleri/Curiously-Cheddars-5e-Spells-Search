@@ -2,24 +2,33 @@
   <div id="app">
     <meta name="viewport" content="width=device-width, user-scalable=false;" />
 
-    <spell-nav-bar @sideBarOn="captureSideBarStatus" @searchText="captureSearchText" :sideBarOn="sideBarOn"></spell-nav-bar>
+    <spell-nav-bar
+      @sideBarOn="captureSideBarStatus"
+      @searchText="captureSearchText"
+      :sideBarOn="sideBarOn"
+    ></spell-nav-bar>
     <div id="wrapper" :class="{ toggled: sideBarOn }">
-      <div id="sidebar-wrapper" class="bg-light ">
-        <spell-filters :classFilters="classFilters"
-                       @classFilters="captureClassFilters"
-                       :levelFilters="levelFilters"
-                       @levelFilters="captureLevelFilters"
-                       :sourceFilters="sourceFilters"
-                       @sourceFilters="captureSourceFilters"
-                       :schoolFilters="schoolFilters"
-                       @schoolFilters="captureSchoolFilters"></spell-filters>
+      <div id="sidebar-wrapper" class="bg-light">
+        <spell-filters
+          :classFilters="classFilters"
+          @classFilters="captureClassFilters"
+          :levelFilters="levelFilters"
+          @levelFilters="captureLevelFilters"
+          :sourceFilters="sourceFilters"
+          @sourceFilters="captureSourceFilters"
+          :schoolFilters="schoolFilters"
+          @schoolFilters="captureSchoolFilters"
+        ></spell-filters>
       </div>
-      <add-spell></add-spell>
+      <!-- <add-spell></add-spell> -->
       <div id="page-content-wrapper">
         <b-container fluid class="bv-example-row m-1">
-          <b-row align-h="center">
-            <spell-card v-for="r in filteredSpells" :spell=r :key="r.index" class="m-2"></spell-card>
+          <b-row :class="{ 'd-none': dataLoading }" align-h="center">
+            <spell-card v-for="r in filteredSpells" :spell="r" :key="r.index" class="m-2"></spell-card>
           </b-row>
+          <div v-if="dataLoading" class="text-center p-5">
+            <h2>Loading data</h2>
+          </div>
         </b-container>
       </div>
     </div>
@@ -35,13 +44,14 @@ import SpellFilters from "./SpellFilters.vue";
 export default {
   components: {
     SpellCard,
-    AddSpell,
+    // AddSpell,
     SpellNavBar,
     SpellFilters
   },
   data() {
     return {
       title: "DnD Search Master",
+      dataLoading: true,
       sideBarOn: false,
       searchText: "",
       spells: [],
@@ -145,7 +155,7 @@ export default {
 
       if (this.classFilters.length != this.classes.length) {
         spells = spells.filter(function(spell) {
-          let x = spell.class;
+          let x = spell.class.split(",");
           let intersection = x.filter(n => classFilters.includes(n));
           if (intersection.length > 0) {
             return spell;
@@ -195,11 +205,23 @@ export default {
     }
   },
   mounted() {
-    fetch("http://localhost:5000/api/values/getspells")
-    //fetch("http://curiouslycheddar.com/api/values/getspells")
-      .then(response => response.json())
+    let self = this;
+    fetch("/spell-data-trimmed.min.json")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("HTTP error " + response.status);
+        }
+        return response.json();
+      })
       .then(data => {
-        this.spells = data;
+        let parsedData = [];
+        for (let i = 0; i < data.length; i++) {
+          data[i].index = i;
+          parsedData.push(data[i]);
+        }
+        console.log(data);
+        this.spells = parsedData;
+        this.dataLoading = false;
       });
   }
 };

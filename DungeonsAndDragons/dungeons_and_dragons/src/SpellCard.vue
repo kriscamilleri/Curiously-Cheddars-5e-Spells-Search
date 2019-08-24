@@ -1,13 +1,15 @@
 
 <template>
-  <div >
-    <b-card img-top
-            v-b-toggle="'descSpell' + spell.index"
-            tag="article"
-            class="mx-auto m-1 spell-card shadow text-left"
-            :border-variant="classColor"
-            header-bg-variant="primary"
-            header-text-variant="white">
+  <div>
+    <b-card
+      img-top
+      v-b-toggle="'descSpell' + spell.index"
+      tag="article"
+      class="mx-auto m-1 spell-card shadow text-left"
+      :border-variant="classColor"
+      header-bg-variant="primary"
+      header-text-variant="white"
+    >
       <h4 class="card-title text-primary" data-toggle="collapse" aria-controls="collapseOne">
         {{spell.name}}
         <span class="badge-shrinker align-middle">
@@ -17,9 +19,14 @@
       </h4>
       <h6 class="card-subtitle mb-2 text-muted" v-html="formattedSubtitle"></h6>
       <p class="card-text text-sm text-muted" align-h="start">
-        <b-collapse :id="'descSpell'+spell.index" class="details-text  text-justify">
+        <b-collapse :id="'descSpell'+spell.index" class="details-text text-justify">
           <br />
-          <span v-html="formattedDetails"></span>
+          <strong>Description</strong>
+          <span v-html="spell.desc"></span>
+          <strong>Classes</strong>
+          <p>{{spell.class}}</p>
+          <strong>Components</strong>
+          <p>{{spell.material != null ? spell.material : 'None.'}}</p>
         </b-collapse>
       </p>
     </b-card>
@@ -93,10 +100,11 @@ export default {
       return description + classes + components;
     },
     formattedClasses: function() {
-      let classArr = this.spell.class;
+      // let classArr = this.spell.class;
+      let classArray = this.spell.class.split(",");
 
       let classes =
-        "<strong>Classes</strong><p>" + classArr.join(", ") + ".</p>";
+        "<strong>Classes</strong><p>" + classArray.join(", ") + ".</p>";
 
       return classes;
     },
@@ -117,7 +125,8 @@ export default {
     },
     formattedCastingTime: function() {
       return (
-        "<strong class='text-success'>C&nbsp;</strong>" + this.spell.castingTime
+        "<strong class='text-success'>C&nbsp;</strong>" +
+        this.spell.casting_time
       );
     },
     formattedComponents: function() {
@@ -131,10 +140,10 @@ export default {
       if (this.spell.material) {
         array.push("Material");
       }
-      if(array.length > 0){
+      if (array.length > 0) {
         return "<strong>Components</strong><p>" + array.join(", ") + ".</p>";
       }
-      return '';
+      return "";
     },
     classColor: function() {
       return "muted";
@@ -144,26 +153,26 @@ export default {
 //Stacked progress bar to denote spell class requirement
 </script>
 <style>
-  .details-text {
-    font-size: 0.85rem;
-  }
+.details-text {
+  font-size: 0.85rem;
+}
 
-  .component-text {
-    font-size: 0.85rem;
-  }
+.component-text {
+  font-size: 0.85rem;
+}
 
-  .badge-shrinker {
-    font-size: 0.85rem;
-  }
+.badge-shrinker {
+  font-size: 0.85rem;
+}
 
-  .card {
-    cursor: pointer;
-    min-height: 160px;
-    min-width: 15.8rem;
-    max-width: 15.8rem;
-  }
+.card {
+  cursor: pointer;
+  min-height: 160px;
+  min-width: 15.8rem;
+  max-width: 15.8rem;
+}
 
-  .navbar-brand {
-    margin-right: 0.5rem;
-  }
+.navbar-brand {
+  margin-right: 0.5rem;
+}
 </style>

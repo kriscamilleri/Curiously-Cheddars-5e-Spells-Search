@@ -1,8 +1,11 @@
 const path = require("path");
 const CompressionPlugin = require("compression-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
-const { inlineSource } = require("inline-source");
+const {
+  inlineSource
+} = require("inline-source");
 var HtmlWebpackInlinePlugin = require("html-webpack-inline-plugin");
+var HtmlWebPackPlugin = require("html-webpack-plugin")
 const webpack = require("webpack");
 
 module.exports = {
@@ -13,8 +16,7 @@ module.exports = {
     filename: "build.js"
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.css$/,
         use: ["vue-style-loader", "css-loader"]
       },
@@ -85,7 +87,7 @@ if (process.env.NODE_ENV === "production") {
       threshold: 10240,
       minRatio: 0.8
     }),
-    new HtmlWebpackPlugin(),
+    new HtmlWebPackPlugin(),
     new HtmlWebpackInlinePlugin()
   ]);
 }
