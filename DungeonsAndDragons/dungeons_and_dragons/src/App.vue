@@ -206,7 +206,7 @@ export default {
   },
   mounted() {
     let self = this;
-    fetch("/spell-data-trimmed.min.json")
+    fetch("https://dreamy-mayer-b15b5b.netlify.com/literuje.json")
       .then(response => {
         if (!response.ok) {
           throw new Error("HTTP error " + response.status);

@@ -10,3 +10,9 @@ yarn-error.log
 *.ntvs*
 *.njsproj
 *.sln
+
+# Data files
+spell-data.json
+spell_data.sql
+spell-data-test.json
+spell-data-trimmed.min.json
