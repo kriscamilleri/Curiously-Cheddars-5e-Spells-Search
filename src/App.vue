@@ -23,12 +23,20 @@
       <!-- <add-spell></add-spell> -->
       <div id="page-content-wrapper">
         <b-container fluid class="bv-example-row m-1">
-          <b-row :class="{ 'd-none': dataLoading }" align-h="center">
+          <b-row :class="{ 'd-none': dataLoading }" id="spellContainer" align-h="center">
             <spell-card v-for="r in filteredSpells" :spell="r" :key="r.index" class="m-2"></spell-card>
           </b-row>
           <div v-if="dataLoading" class="text-center p-5">
             <h2>Loading data...</h2>
           </div>
+          <b-pagination
+            align="center"
+            class="p-4 mt-4"
+            v-model="currentPage"
+            :total-rows="spellSize"
+            :per-page="pageSize"
+            aria-controls="spellContainer"
+          ></b-pagination>
         </b-container>
       </div>
     </div>
@@ -55,6 +63,9 @@ export default {
       sideBarOn: false,
       searchText: "",
       spells: [],
+      currentPage: 1,
+      spellSize: 0,
+      pageSize: 20,
       classFilters: [
         "bard",
         "cleric",
@@ -111,7 +122,12 @@ export default {
       spells = this.filterLevels(spells);
       spells = this.filterSources(spells);
       spells = this.filterSchools(spells);
+      this.spellSize = spells.length;
 
+      const firstSpellIndex = (this.currentPage - 1) * this.pageSize;
+      const lastSpellIndex = this.currentPage * this.pageSize;
+
+      spells = spells.slice(firstSpellIndex, lastSpellIndex);
       return spells;
     }
   },
@@ -169,7 +185,7 @@ export default {
       if (levelFilters.length != this.levels.length) {
         spells = spells.filter(function(spell) {
           let x = spell.level;
-          let intersection = levelFilters.includes(x);
+          let intersection = levelFilters.includes(parseInt(x));
           if (intersection) {
             return spell;
           }
@@ -202,44 +218,35 @@ export default {
         });
       }
       return spells;
+    },
+    parseSpells(url) {
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+          }
+          return response.json();
+        })
+        .then(data => {
+          let parsedData = [];
+          for (let i = 0; i < data.length; i++) {
+            data[i].index = this.spells.length + 1;
+            this.spells.push(data[i]);
+          }
+          this.spells = this.spells.sort((a, b) => a.name > b.name);
+          this.dataLoading = false;
+        });
     }
   },
   mounted() {
     let self = this;
-    fetch(
-      "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/Kspd33fi"
-    )
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("HTTP error " + response.status);
-        }
-        return response.json();
-      })
-      .then(data => {
-        let parsedData = [];
-        for (let i = 0; i < data.length; i++) {
-          data[i].index = i;
-          this.spells.push(data[i]);
-        }
-        this.dataLoading = false;
-      });
-    fetch(
-      "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/cVkubnRJ"
-    )
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("HTTP error " + response.status);
-        }
-        return response.json();
-      })
-      .then(data => {
-        let parsedData = [];
-        for (let i = 0 + data.length; i < data.length; i++) {
-          data[i].index = i;
-          this.spells.push(data[i]);
-        }
-        this.dataLoading = false;
-      });
+    const firstUrl =
+      "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/Kspd33fi";
+    const secondUrl =
+      "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/cVkubnRJ";
+
+    this.parseSpells(firstUrl);
+    this.parseSpells(secondUrl);
   }
 };
 </script>

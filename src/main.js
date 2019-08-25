@@ -7,6 +7,7 @@ import Card from "bootstrap-vue";
 import Collapse from "bootstrap-vue";
 import Form from "bootstrap-vue";
 import FormCheckbox from "bootstrap-vue";
+import Pagination from "bootstrap-vue";
 import InputGroup from "bootstrap-vue";
 import Nav from "bootstrap-vue";
 import Navbar from "bootstrap-vue";
@@ -22,6 +23,7 @@ Vue.use(
   Collapse,
   Form,
   FormCheckbox,
+  Pagination,
   InputGroup,
   Nav,
   Navbar,
