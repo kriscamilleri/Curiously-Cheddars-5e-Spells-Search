@@ -206,7 +206,9 @@ export default {
   },
   mounted() {
     let self = this;
-    fetch("https://vigilant-montalcini-5f08ae.netlify.com/literuje.json")
+    fetch(
+      "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/Kspd33fi"
+    )
       .then(response => {
         if (!response.ok) {
           throw new Error("HTTP error " + response.status);
@@ -217,10 +219,25 @@ export default {
         let parsedData = [];
         for (let i = 0; i < data.length; i++) {
           data[i].index = i;
-          parsedData.push(data[i]);
+          this.spells.push(data[i]);
         }
-        // console.log(data);
-        this.spells = parsedData;
+        this.dataLoading = false;
+      });
+    fetch(
+      "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/cVkubnRJ"
+    )
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("HTTP error " + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        let parsedData = [];
+        for (let i = 0 + data.length; i < data.length; i++) {
+          data[i].index = i;
+          this.spells.push(data[i]);
+        }
         this.dataLoading = false;
       });
   }
