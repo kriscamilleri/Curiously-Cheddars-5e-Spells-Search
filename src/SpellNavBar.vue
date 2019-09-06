@@ -13,8 +13,13 @@
       <b-navbar-nav class="ml-auto">
         <!-- <b-nav-item size="sm" class="my-2 mr-4 nav-button btn-secondary" v-b-modal="'spellModal'">Add Spell...</b-nav-item> -->
         <b-nav-item
-          href="#menu-toggle"
+          size="sm"
           class="my-2 mr-4 nav-button btn-primary"
+          v-b-modal="'favoritesModal'"
+        >Favorites</b-nav-item>
+        <b-nav-item
+          href="#menu-toggle"
+          class="my-2 mr-4 nav-button btn-info"
           :class="{ active: sideBarOn}"
           size="sm"
           v-on:click.prevent="toggleSideBar"
@@ -40,6 +45,7 @@ export default {
   name: "SpellNavBar",
   props: {
     sideBarOn: false
+    // spells: []
   },
   data: function() {
     return {

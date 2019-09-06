@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal
-      title="Generate Favorite"
+      title="Create Spellbook"
       id="favoritesModal"
       size="lg"
       class="modal-full"
@@ -9,20 +9,20 @@
       ok-title="Generate"
       method="post"
     >
+      <div class="row">
+        <div class="col-md-12">
+          <p>Select as many spells as you'd like from below, and hit generate to create your character's spellbook.</p>
+        </div>
+      </div>
       <div class="row mb-3">
         <div class="col-md-6 my-2">
           <div class="input-group input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text">Filter</span>
+              <span class="input-group-text">Search</span>
             </div>
-            <input
-              type="text"
-              v-model="searchString"
-              class="form-control"
-              aria-describedby="inputGroup-sizing"
-            />
+            <input type="text" v-model="searchString" class="form-control" />
           </div>
-          <div class="search-container">
+          <div class="search-container border">
             <div class="card-sm">
               <ul class="list-group list-group-flush">
                 <li
@@ -37,32 +37,36 @@
               </ul>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="border p-2">
+                <span
+                  class="btn btn-primary"
+                  v-on:click="addSpell(selectedSpell)"
+                  :class="selectedSpell.index === undefined ? 'disabled' : ''"
+                >Add Spell</span>
+                <span class="btn btn-info text-white float-right">Filters...</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <span
+                v-for="spell in addedSpells"
+                :key="spell.index"
+                class="badge badge-light p-2 m-2 h1 border-primary border"
+              >{{spell.name}}</span>
+            </div>
+          </div>
         </div>
         <div class="col-md-6 my-2">
           <div class="info-container">
             <h3>{{selectedSpell.name}}</h3>
             <h5 v-if="selectedSpell.level">Level {{selectedSpell.level}} - {{selectedSpell.school}}</h5>
             <pre class="text-primary">{{selectedSpell.class}}</pre>
-
-            <div class v-html="selectedSpell.desc"></div>
+            <div class="text-justify" v-html="selectedSpell.desc"></div>
           </div>
         </div>
-        <!-- <div class="col-md-6">
-          <label class="d-block" for="levelsInput">
-            <strong>Level</strong>
-          </label>
-          <b-input-group left="@" class="mb-2 mr-sm-2 mb-sm-0">
-            <b-input
-              id="levelsInput"
-              name="levelsInput"
-              placeholder="ex. 9"
-              type="number"
-              min="0"
-              max="9"
-            />
-          </b-input-group>
-          <br />
-        </div>-->
       </div>
     </b-modal>
   </div>
@@ -77,7 +81,8 @@ export default {
   data() {
     return {
       searchString: "",
-      selectedSpell: {}
+      selectedSpell: {},
+      addedSpells: []
     };
   },
   computed: {
@@ -92,14 +97,32 @@ export default {
   methods: {
     selectSpell: function(index) {
       this.selectedSpell = this.spells.find(c => c.index === index);
+    },
+    addSpell: function(spell) {
+      console.log("onclick");
+      //disable button when nothing to add
+      if (this.selectedSpell.index === undefined) {
+        return;
+      }
+
+      const existingSpell = this.addedSpells.find(x => x.index === spell.index);
+      if (existingSpell === undefined) {
+        console.log("existingspell");
+        this.addedSpells.push(spell);
+      }
     }
   }
 };
 </script>
 <style>
-.modal-body {
-  padding: 1rem;
-  margin-top: 0.5rem;
+.modal .badge {
+  font-size: 130%;
+}
+:root {
+  --modal-container-footer: 7rem;
+}
+input.form-control {
+  padding: 0.75rem 1.25rem;
 }
 .selected {
   color: var(--white);
@@ -107,17 +130,29 @@ export default {
 }
 .info-container {
   padding: 1rem;
-  height: 33.5rem;
-  border: 0.125rem solid var(--dark);
+  height: calc(80vh - var(--modal-container-footer));
   overflow: scroll;
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+  -webkit-column-width: 20rem;
+  -moz-column-width: 20rem;
+  column-width: 20rem;
+  -moz-column-fill: auto;
+  column-fill: auto;
+  -webkit-column-gap: 4em;
+  -moz-column-gap: 4em;
+  column-gap: 4em;
+  -webkit-column-rule: 1px dotted var(--dark);
+  -moz-column-rule: 1px dotted var(--dark);
+  column-rule: 1px dotted var(--dark);
 }
 .search-container {
   -webkit-user-select: none; /* Chrome all / Safari all */
   -moz-user-select: none; /* Firefox all */
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
-  height: 31rem;
-  border: 0.125rem solid var(--dark);
+  height: 15rem;
   overflow: scroll;
 }
 .search-container li.list-group-item {
@@ -178,5 +213,10 @@ export default {
 
 .modal .custom-select {
   background: none;
+}
+
+.modal-body {
+  padding: 1rem;
+  margin-top: 0.5rem;
 }
 </style>

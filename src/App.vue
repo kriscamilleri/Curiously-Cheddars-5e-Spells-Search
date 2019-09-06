@@ -5,6 +5,7 @@
     <spell-nav-bar
       @sideBarOn="captureSideBarStatus"
       @searchText="captureSearchText"
+      @spells="spells"
       :sideBarOn="sideBarOn"
     ></spell-nav-bar>
     <div id="wrapper" :class="{ toggled: sideBarOn }">
@@ -21,6 +22,7 @@
         ></spell-filters>
       </div>
       <!-- <add-spell></add-spell> -->
+      <favorites-modal :spells="spells"></favorites-modal>
       <div id="page-content-wrapper">
         <b-container fluid class="bv-example-row m-1">
           <b-row :class="{ 'd-none': dataLoading }" id="spellContainer" align-h="center">
@@ -44,15 +46,27 @@
 </template>
 
 <script>
+/* IDEAS
+Minimal mode
+Fix text to be more obvious
+Size adjustment
+Filter by ritual or concentration
+Expand all cards
+PWA
+Filter fixed width when closing
+*/
+
 import SpellNavBar from "./SpellNavBar.vue";
 import SpellCard from "./SpellCard.vue";
 import AddSpell from "./AddSpell.vue";
 import SpellFilters from "./SpellFilters.vue";
+import FavoritesModal from "./FavoritesModal.vue";
 
 export default {
   components: {
     SpellCard,
     // AddSpell,
+    FavoritesModal,
     SpellNavBar,
     SpellFilters
   },
@@ -76,7 +90,7 @@ export default {
         "warlock",
         "wizard"
       ],
-      sourceFilters: ["EE PC", "PHB", "SCAG", "UA TOBM"],
+      sourceFilters: ["EE", "PHB", "SCAG", "XGTE"],
       levelFilters: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       schoolFilters: [
         "Abjuration",
@@ -99,7 +113,7 @@ export default {
         "wizard"
       ],
       levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      sources: ["EE PC", "PHB", "SCAG", "UA TOBM"],
+      sources: ["EE", "PHB", "SCAG", "UA TOBM"],
       schools: [
         "Abjuration",
         "Conjuration",
@@ -197,8 +211,9 @@ export default {
       let sourceFilters = this.sourceFilters;
       if (sourceFilters.length != this.sources.length) {
         spells = spells.filter(function(spell) {
-          let x = spell.source;
-          let intersection = sourceFilters.includes(x);
+          let source = spell.page.split(" ")[0].toUpperCase();
+          console.log(source + ", " + sourceFilters);
+          let intersection = sourceFilters.includes(source);
           if (intersection) {
             return spell;
           }
@@ -256,6 +271,7 @@ export default {
     display: inline-block;
     column-break-inside: avoid;
   }*/
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
