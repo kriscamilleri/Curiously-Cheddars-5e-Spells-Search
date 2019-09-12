@@ -16,7 +16,7 @@
           size="sm"
           class="my-2 mr-4 nav-button btn-primary"
           v-b-modal="'favoritesModal'"
-        >Favorites</b-nav-item>
+        >Spellbook</b-nav-item>
         <b-nav-item
           href="#menu-toggle"
           class="my-2 mr-4 nav-button btn-info"
@@ -24,7 +24,7 @@
           size="sm"
           v-on:click.prevent="toggleSideBar"
           id="menu-toggle"
-        >Filter...</b-nav-item>
+        >Filter</b-nav-item>
       </b-navbar-nav>
       <div class="input-group">
         <b-form-input
