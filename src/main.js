@@ -9,6 +9,7 @@ import Form from "bootstrap-vue";
 import FormCheckbox from "bootstrap-vue";
 import Pagination from "bootstrap-vue";
 import InputGroup from "bootstrap-vue";
+import Modal from "bootstrap-vue";
 import Nav from "bootstrap-vue";
 import Navbar from "bootstrap-vue";
 import Link from "bootstrap-vue";
@@ -28,7 +29,8 @@ Vue.use(
   Nav,
   Navbar,
   Link,
-  Layout
+  Layout,
+  Modal
 );
 //import ElementUI  from 'element-ui'
 //import 'element-ui/lib/theme-chalk/index.css';

@@ -72,6 +72,7 @@ export default {
   },
   data() {
     return {
+      spellBookFilter: [],
       title: "DnD Search Master",
       dataLoading: true,
       sideBarOn: false,
@@ -130,7 +131,7 @@ export default {
     filteredSpells: function() {
       var searchText = this.searchText;
       let spells = this.spells;
-
+      spells = this.filterSpellBook(spells);
       spells = this.filterSearch(spells, searchText);
       spells = this.filterClasses(spells);
       spells = this.filterLevels(spells);
@@ -177,6 +178,16 @@ export default {
         });
       }
       return spells;
+    },
+    filterSpellBook(spells) {
+      if (this.spellBookFilter.length == 0) {
+        return spells;
+      }
+      console.log(this.spellBookFilter);
+      const filteredSpells = spells.filter(
+        c => this.spellBookFilter.indexOf(c.index) !== -1
+      );
+      return filteredSpells;
     },
     filterClasses(spells) {
       let classFilters = this.classFilters.map(function(value) {
@@ -251,6 +262,16 @@ export default {
           this.spells = this.spells.sort((a, b) => a.name > b.name);
           this.dataLoading = false;
         });
+    },
+    parseUrl() {
+      let uri = window.location.search.substring(1);
+      let params = new URLSearchParams(uri);
+      let spellsString = params.get("spellbook");
+      if (spellsString) {
+        this.spellBookFilter = spellsString.split("-").map(c => parseInt(c));
+      }
+
+      console.log(this.spellBookFilter);
     }
   },
   mounted() {
@@ -259,6 +280,7 @@ export default {
       "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/Kspd33fi";
     const secondUrl =
       "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/cVkubnRJ";
+    this.parseUrl();
 
     this.parseSpells(firstUrl);
     this.parseSpells(secondUrl);

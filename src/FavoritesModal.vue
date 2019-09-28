@@ -5,16 +5,13 @@
       id="favoritesModal"
       size="lg"
       class="modal-full"
-      ok-variant="success"
-      ok-title="Generate"
       method="post"
+      ref="favoritesModal"
     >
       <div class="row mb-3">
-        <div class="col-md-6 my-2">
+        <div class="col-md-6">
           <div class="row">
-            <div class="col-md-12">
-              <p>Select as many spells as you'd like from below, and hit generate to create your character's spellbook.</p>
-            </div>
+            <div class="col-md-12"></div>
           </div>
           <div class="input-group input-group">
             <div class="input-group-prepend">
@@ -45,27 +42,26 @@
                   v-on:click="addSpell(selectedSpell)"
                   :class="selectedSpell.index === undefined ? 'disabled' : ''"
                 >Add Spell</span>
-                <span class="btn btn-info text-white float-right">Filters...</span>
+                <!-- <span class="btn btn-info text-white float-right">Filters...</span> -->
               </div>
             </div>
           </div>
+          <div></div>
           <div class="row">
             <div class="col-md-12">
               <span
                 v-for="spell in addedSpells"
                 :key="spell.index"
-                class="badge badge-light p-2 m-2 h1 border-primary border"
+                class="btn btn-dark p-2 m-2 border-primary border"
               >
                 <small>Lvl{{spell.level}}</small>
                 {{spell.name}}
-                <small class="close-button">
-                  <span class="p-1 badge badge-sm badge-secondary m-1">X</span>
-                </small>
+                <small class="border-primary border-left px-1">X</small>
               </span>
             </div>
           </div>
         </div>
-        <div class="col-md-6 my-2">
+        <div class="col-md-6">
           <div id="infoContainer" class="info-container border py-4">
             <div id="infoSubcontainer" class="info-subcontainer px-3 pb-5 pt-1">
               <span class="info-header">
@@ -75,10 +71,14 @@
                 >Level {{selectedSpell.level}} - {{selectedSpell.school}}</h5>
                 <small class="text-primary">{{selectedSpell.class}}</small>
               </span>
-              <div class="text-justify" v-html="extendedDescription"></div>
+              <div
+                class="text-justify"
+                :class="this.selectedSpell.desc ? '' : 'invisible'"
+                v-html="extendedDescription"
+              ></div>
             </div>
           </div>
-          <div v-if="paginationEnabled === true" class="info-footer mx-3">
+          <div v-if="paginationEnabled === true" class="info-footer border p-2 pb-5">
             <span
               class="btn btn-dark float-right"
               :class="nextEnabled ? '' : 'disabled'"
@@ -93,6 +93,39 @@
           </div>
         </div>
       </div>
+
+      <template slot="modal-footer">
+        <div class="w-100">
+          <p
+            class="d-inline-block"
+            v-if="generatedLink.length <= 0"
+          >Select as many spells as you'd like from above, and hit generate to create your character's spellbook.</p>
+
+          <input
+            id="generatedLink"
+            class="pb-1 d-inline-block"
+            v-if="generatedLink.length > 0"
+            readonly="readonly"
+            :value="generatedLink"
+          />
+
+          <a
+            class="btn btn-success"
+            id="copyLink"
+            v-if="generatedLink.length > 0"
+            :href="generatedLink"
+            target="_blank"
+          >Open</a>
+          <b-button
+            variant="success"
+            size
+            class="float-right mx-1"
+            v-on:click="generateLink"
+            :class="addedSpells.length === 0 ? 'disabled' : 'false'"
+          >Generate</b-button>
+          <b-button variant="dark" size class="float-right mx-1" v-on:click="hideModal">Cancel</b-button>
+        </div>
+      </template>
     </b-modal>
   </div>
 </template>
@@ -105,14 +138,15 @@ export default {
   },
   data() {
     return {
-      searchString: "banishment",
+      searchString: "",
       selectedSpell: {},
       addedSpells: [],
       containerWidth: Number,
       pageCount: 0,
       paginationEnabled: false,
       nextEnabled: true,
-      previousEnabled: true
+      previousEnabled: true,
+      generatedLink: ""
     };
   },
   computed: {
@@ -124,15 +158,28 @@ export default {
       return spells;
     },
     extendedDescription: function() {
-      return this.selectedSpell.desc + "<p class='extended-description'></p>";
+      if (this.selectedSpell) {
+        return this.selectedSpell.desc + "<p class='extended-description'></p>";
+      }
+      return "<p class='extended-description'></p>";
     }
   },
   mounted() {
     const container = document.getElementsByClassName("info-container")[0];
     this.containerWidth = container.offsetWidth;
-    window.addEventListener("resize", this.handleResize);
+    // window.addEventListener("resize", this.handleResize);
+
+    const self = this;
+    let executable;
+    window.onresize = function() {
+      clearTimeout(executable);
+      executable = setTimeout(self.handleResize, 100);
+    };
   },
   methods: {
+    hideModal: function() {
+      this.$refs["favoritesModal"].hide();
+    },
     selectSpell: function(index) {
       this.selectedSpell = this.spells.find(c => c.index === index);
       this.resetPage();
@@ -147,6 +194,19 @@ export default {
         this.addedSpells.push(spell);
       }
     },
+    generateLink: function(event) {
+      event.preventDefault();
+      const spellList = this.addedSpells.map(c => c.index);
+      const joinedSpells = spellList.join("-");
+      const url =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        "?spellbook=" +
+        joinedSpells;
+      this.generatedLink = url;
+      console.log(url);
+    },
     previousPage: function() {
       if (!this.previousEnabled) {
         return;
@@ -156,10 +216,8 @@ export default {
       const container = document.getElementById("infoContainer");
       this.containerWidth = container.offsetWidth;
       const translate = this.pageCount * (this.containerWidth + 15);
-
       subcontainer.style.transform = `translateX(-${translate}px)`;
       this.togglePaginationButtons();
-      console.log("previous");
     },
     nextPage: function() {
       if (!this.nextEnabled) {
@@ -173,40 +231,31 @@ export default {
 
       subcontainer.style.transform = `translateX(-${translate}px)`;
       this.togglePaginationButtons();
-      console.log("next");
     },
     togglePaginationButtons: function() {
-      //TODO CONTINUE HERE
+      //Caution: Hacky/Fragile stuff ahead
       let self = this;
       const executable = function(self) {
+        const infoContainer = document.getElementById("infoContainer");
         const subcontainer = document.getElementById("infoSubcontainer");
         const container = document.getElementById("infoContainer");
-        // this.window.width = subcontainer.offsetWidth;
         self.containerWidth = container.offsetWidth;
         const lastPosition = self.getElementOffset(
           subcontainer.lastChild.lastChild
         ).left;
-        console.log(subcontainer.lastChild.lastChild);
-        const firstPosition = self.getElementOffset(subcontainer).left;
+        let lastChild = subcontainer.lastChild.lastChild;
+        lastChild =
+          lastChild.innerHTML === "" ? lastChild.previousSibling : lastChild;
+        const infoContainerPosRight = self.getElementOffset(infoContainer)
+          .right;
+        const lastChildPosRight = self.getElementOffset(lastChild).right;
         const scrollDistance = self.pageCount * (self.containerWidth + 15);
-        console.log(
-          "self.pageCount:" +
-            self.pageCount +
-            ", self.containerWidth:" +
-            self.containerWidth
-        );
-        console.log(
-          "scrolldistance:" + scrollDistance + ", lastPosition:" + lastPosition
-        );
-        const nextPage = scrollDistance < lastPosition;
-        console.log("subcontainer.lastChild");
-        console.log(subcontainer.lastChild);
-
+        const nextPage = lastChildPosRight > infoContainerPosRight + 17;
         self.nextEnabled = nextPage;
-        const previousPage = scrollDistance > firstPosition;
+        const previousPage = scrollDistance > 0;
         self.previousEnabled = previousPage;
       };
-      this.delayExecution(10, executable);
+      this.delayExecution(100, executable);
     },
     resetPage: function() {
       const subcontainer = document.getElementById("infoSubcontainer");
@@ -217,37 +266,42 @@ export default {
     paginate: function() {
       let self = this;
       //TODO: should turn into its own component, however, for now - a timeout should give vue enough time to add the elements to the DOM and allow for position calculations
-      setTimeout(function() {
-        const container = document.getElementById("infoContainer");
+      const executable = function() {
+        const infoContainer = document.getElementById("infoContainer");
         const subcontainer = document.getElementById("infoSubcontainer");
-        const firstPosition = self.getElementOffset(
-          subcontainer.lastElementChild
-        ).left;
+        const container = document.getElementById("infoContainer");
+        self.containerWidth = container.offsetWidth;
         const lastPosition = self.getElementOffset(
           subcontainer.lastChild.lastChild
         ).left;
+        let lastChild = subcontainer.lastChild.lastChild;
+        lastChild =
+          lastChild.innerHTML === "" ? lastChild.previousSibling : lastChild;
+        const infoContainerPosRight = self.getElementOffset(infoContainer)
+          .right;
+        const lastChildPosRight = self.getElementOffset(lastChild).right;
+        const scrollDistance = self.pageCount * (self.containerWidth + 15);
+        const nextPage = lastChildPosRight > infoContainerPosRight + 17;
+        const previousPage = scrollDistance > 0;
+
         subcontainer.style.transform = `translateX(0px)`;
         self.pageCount = 0;
-        if (firstPosition !== lastPosition) {
+        if (previousPage || nextPage) {
           self.paginationEnabled = true;
-          console.log("test");
         } else {
           self.paginationEnabled = false;
         }
-      }, 10);
+      };
+      this.delayExecution(10, executable);
     },
     getElementOffset: function(el) {
       const rect = el.getBoundingClientRect();
       return {
         top: rect.top + window.pageYOffset,
-        left: rect.left + window.pageXOffset
+        left: rect.left + window.pageXOffset,
+        bottom: rect.top + rect.height + window.pageYOffset,
+        right: rect.left + rect.width + window.pageXOffset
       };
-
-      // If you want to support IE8 and lower
-      // Use
-      //
-      // top: rect.top + (window.pageYOffset || document.documentElement.scrollTop),
-      // left: rect.left + (window.pageXOffset || document.documentElement.scrollLeft),
     },
     handleResize: function() {
       const subcontainer = document.getElementById("infoSubcontainer");
@@ -292,7 +346,6 @@ input.form-control {
   background-color: var(--primary);
 }
 .info-container {
-  margin: 1rem;
   max-height: calc(80vh - (var(--info-footer) + var(--modal-container-footer)));
   -webkit-column-width: 20rem;
   -moz-column-width: 20rem;
