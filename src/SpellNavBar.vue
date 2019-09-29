@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="md" type="light" variant="white" class="bg-light fixed-top">
-    <b-navbar-brand href="#">CC's Spell Search</b-navbar-brand>
+    <b-navbar-brand href="#">{{navTitle}}</b-navbar-brand>
     <b-navbar-toggle target="nav_collapse" class="float-right navbar-toggle"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse" class>
       <b-navbar-nav>
@@ -44,7 +44,8 @@
 export default {
   name: "SpellNavBar",
   props: {
-    sideBarOn: false
+    sideBarOn: false,
+    navTitle: ""
     // spells: []
   },
   data: function() {

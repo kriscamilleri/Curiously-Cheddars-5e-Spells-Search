@@ -4,7 +4,6 @@
       title="Create Spellbook"
       id="favoritesModal"
       size="lg"
-      class="modal-full"
       method="post"
       ref="favoritesModal"
     >
@@ -45,9 +44,13 @@
               <div class="border">
                 <div class="row">
                   <div class="col-lg-12">
-                    <div class="m-2">
+                    <div class="m-3">
                       <h5>Spellbook Name</h5>
-                      <input class="input" placeholder="ex. Perrywook's Book" />
+                      <input
+                        class="input mt-2"
+                        placeholder="ex. Perrywook's Book"
+                        v-model="spellBookName"
+                      />
                       <h5 class="mt-4">Added Spells</h5>
                       <div></div>
 
@@ -55,7 +58,7 @@
                         v-for="spell in addedSpells"
                         v-on:click="removeSpell(spell.index)"
                         :key="spell.index"
-                        class="btn btn-dark m-2 border-primary border"
+                        class="btn btn-dark mt-2 mr-2 border-primary border"
                       >
                         <small>Lvl{{spell.level}}</small>
                         {{spell.name}}
@@ -152,6 +155,7 @@ export default {
   data() {
     return {
       searchString: "",
+      spellBookName: "",
       selectedSpell: {},
       addedSpells: [],
       containerWidth: Number,
@@ -178,8 +182,8 @@ export default {
     }
   },
   mounted() {
-    const container = document.getElementsByClassName("info-container")[0];
-    this.containerWidth = container.offsetWidth;
+    // const container = document.getElementsByClassName("info-container")[0];
+    // this.containerWidth = container.offsetWidth;
     // window.addEventListener("resize", this.handleResize);
 
     const self = this;
@@ -220,12 +224,7 @@ export default {
       event.preventDefault();
       const spellList = this.addedSpells.map(c => c.index);
       const joinedSpells = spellList.join("-");
-      const url =
-        window.location.protocol +
-        "//" +
-        window.location.host +
-        "?spellbook=" +
-        joinedSpells;
+      const url = `${window.location.protocol}//${window.location.host}?spellbookname=${this.spellBookName}&spellbook=${joinedSpells}`;
       this.generatedLink = url;
       console.log(url);
     },
@@ -456,24 +455,24 @@ input.form-control {
   padding-right: 0 !important;
 }
 
-.modal-full {
+.modal-lg {
   min-width: 100%;
   margin: 0 !important;
 }
 
-.modal-full .modal-dialog {
+.modal-lg .modal-dialog {
   min-width: 100%;
   margin: 0;
 }
 @media only screen and (min-width: 600px) {
-  .modal-full .modal-content {
+  .modal-lg .modal-content {
     min-height: 100vh;
-    padding: 4rem;
+    padding: 3rem;
   }
 
   .modal .close {
-    margin-top: -4rem;
-    margin-right: -4rem;
+    margin-top: -3rem;
+    margin-right: -3rem;
     font-size: 2rem;
   }
 }

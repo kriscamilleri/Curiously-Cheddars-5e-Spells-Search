@@ -1,10 +1,13 @@
 <template>
   <div id="app">
+    <title>{{spellBookTitle}}</title>
+
     <meta name="viewport" content="width=device-width, user-scalable=false;" />
     <spell-nav-bar
       @sideBarOn="captureSideBarStatus"
       @searchText="captureSearchText"
       @spells="spells"
+      :navTitle="spellBookTitle"
       :sideBarOn="sideBarOn"
     ></spell-nav-bar>
     <div id="wrapper" :class="{ toggled: sideBarOn }">
@@ -72,7 +75,8 @@ export default {
   data() {
     return {
       spellBookFilter: [],
-      title: "DnD Search Master",
+      spellBookTitle: "CC's Spell Search",
+      // title: "DnD Search Master",
       dataLoading: true,
       sideBarOn: false,
       searchText: "",
@@ -293,21 +297,25 @@ export default {
       let uri = window.location.search.substring(1);
       let params = new URLSearchParams(uri);
       let spellsString = params.get("spellbook");
+      let spellBookTitle = params.get("spellbookname");
       if (spellsString) {
         this.spellBookFilter = spellsString.split("-").map(c => parseInt(c));
       }
+      if (spellBookTitle) {
+        this.spellBookTitle = spellBookTitle;
+      }
 
-      console.log(this.spellBookFilter);
+      console.log(this.spellBookTitle);
     }
   },
   mounted() {
     let self = this;
-    const firstUrl = "/pastebin-1";
-    const secondUrl = "/pastebin-2";
+    const firstUrl = "/spell_data_trimmed.json";
+    // const secondUrl = "/pastebin-2";
     this.parseUrl();
 
     this.parseSpells(firstUrl);
-    this.parseSpells(secondUrl);
+    // this.parseSpells(secondUrl);
   }
 };
 </script>

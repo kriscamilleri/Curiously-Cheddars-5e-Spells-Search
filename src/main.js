@@ -16,7 +16,6 @@ import Link from "bootstrap-vue";
 import Layout from "bootstrap-vue";
 import "./bootstrap-theme/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.min.css";
-import VueJsonp from 'vue-jsonp';
 
 Vue.use(
   Badge,
@@ -34,7 +33,6 @@ Vue.use(
   Modal
 );
 
-Vue.use(VueJsonp)
 //import ElementUI  from 'element-ui'
 //import 'element-ui/lib/theme-chalk/index.css';
 
