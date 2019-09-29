@@ -8,12 +8,17 @@
       method="post"
       ref="favoritesModal"
     >
-      <div class="row mb-3">
+      <div class="row">
+        <div class="col-md-12">
+          <p
+            class="d-inline-block"
+            v-if="generatedLink.length <= 0"
+          >Select as many spells as you'd like from above, and hit generate to create your character's spellbook.</p>
+        </div>
+      </div>
+      <div class="max-height row mb-3">
         <div class="col-md-6">
-          <div class="row">
-            <div class="col-md-12"></div>
-          </div>
-          <div class="input-group input-group">
+          <div class="input-group mb-2">
             <div class="input-group-prepend">
               <span class="input-group-text">Search</span>
             </div>
@@ -34,73 +39,82 @@
               </ul>
             </div>
           </div>
+          <br />
           <div class="row">
             <div class="col-md-12">
-              <div class="border p-2">
-                <span
-                  class="btn btn-primary"
-                  v-on:click="addSpell(selectedSpell)"
-                  :class="selectedSpell.index === undefined ? 'disabled' : ''"
-                >Add Spell</span>
-                <!-- <span class="btn btn-info text-white float-right">Filters...</span> -->
+              <div class="border">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="m-2">
+                      <h5>Spellbook Name</h5>
+                      <input class="input" placeholder="ex. Perrywook's Book" />
+                      <h5 class="mt-4">Added Spells</h5>
+                      <div></div>
+
+                      <span
+                        v-for="spell in addedSpells"
+                        v-on:click="removeSpell(spell.index)"
+                        :key="spell.index"
+                        class="btn btn-dark m-2 border-primary border"
+                      >
+                        <small>Lvl{{spell.level}}</small>
+                        {{spell.name}}
+                        <small
+                          class="border-primary border-left px-1"
+                        >X</small>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div></div>
-          <div class="row">
-            <div class="col-md-12">
-              <span
-                v-for="spell in addedSpells"
-                :key="spell.index"
-                class="btn btn-dark p-2 m-2 border-primary border"
-              >
-                <small>Lvl{{spell.level}}</small>
-                {{spell.name}}
-                <small class="border-primary border-left px-1">X</small>
-              </span>
             </div>
           </div>
         </div>
         <div class="col-md-6">
-          <div id="infoContainer" class="info-container border py-4">
-            <div id="infoSubcontainer" class="info-subcontainer px-3 pb-5 pt-1">
-              <span class="info-header">
-                <h3>{{selectedSpell.name}}</h3>
-                <h5
-                  v-if="selectedSpell.level"
-                >Level {{selectedSpell.level}} - {{selectedSpell.school}}</h5>
-                <small class="text-primary">{{selectedSpell.class}}</small>
-              </span>
-              <div
-                class="text-justify"
-                :class="this.selectedSpell.desc ? '' : 'invisible'"
-                v-html="extendedDescription"
-              ></div>
+          <div class="max-height border d-flex flex-column">
+            <div id="infoContainer" class="info-container py-4">
+              <div id="infoSubcontainer" class="info-subcontainer px-3 pb-5 pt-1 align-self-top">
+                <span class="info-header">
+                  <h3>{{selectedSpell.name}}</h3>
+                  <h5
+                    v-if="selectedSpell.level"
+                  >Level {{selectedSpell.level}} - {{selectedSpell.school}}</h5>
+                  <small class="text-primary">{{selectedSpell.class}}</small>
+                </span>
+                <div
+                  class="text-justify"
+                  :class="this.selectedSpell.desc ? '' : 'invisible'"
+                  v-html="extendedDescription"
+                ></div>
+              </div>
             </div>
-          </div>
-          <div v-if="paginationEnabled === true" class="info-footer border p-2 pb-5">
-            <span
-              class="btn btn-dark float-right"
-              :class="nextEnabled ? '' : 'disabled'"
-              @
-              v-on:click="nextPage()"
-            >Next</span>
-            <span
-              class="btn btn-dark"
-              :class="previousEnabled ? '' : 'disabled'"
-              v-on:click="previousPage()"
-            >Previous</span>
+            <div
+              v-if="paginationEnabled === true"
+              class="info-footer border p-2 pb-5 text-center align-self-end"
+            >
+              <span
+                class="btn btn-dark float-right"
+                :class="nextEnabled ? '' : 'disabled'"
+                v-on:click="nextPage()"
+              >Next</span>
+
+              <span
+                class="btn btn-dark float-left"
+                :class="previousEnabled ? '' : 'disabled'"
+                v-on:click="previousPage()"
+              >Previous</span>
+              <span
+                :class="selectedSpell.index === undefined ? 'disabled' : ''"
+                class="btn btn-primary align-bottom"
+                v-on:click="addSpell(selectedSpell)"
+              >Add Spell</span>
+            </div>
           </div>
         </div>
       </div>
 
       <template slot="modal-footer">
         <div class="w-100">
-          <p
-            class="d-inline-block"
-            v-if="generatedLink.length <= 0"
-          >Select as many spells as you'd like from above, and hit generate to create your character's spellbook.</p>
-
           <input
             id="generatedLink"
             class="pb-1 d-inline-block"
@@ -108,7 +122,6 @@
             readonly="readonly"
             :value="generatedLink"
           />
-
           <a
             class="btn btn-success"
             id="copyLink"
@@ -143,7 +156,7 @@ export default {
       addedSpells: [],
       containerWidth: Number,
       pageCount: 0,
-      paginationEnabled: false,
+      paginationEnabled: true,
       nextEnabled: true,
       previousEnabled: true,
       generatedLink: ""
@@ -177,6 +190,15 @@ export default {
     };
   },
   methods: {
+    removeSpell(index) {
+      let spells = [];
+      for (let i = 0; i < this.addedSpells.length; i++) {
+        if (this.addedSpells[i].index !== index) {
+          spells.push(this.addedSpells[i]);
+        }
+      }
+      this.addedSpells = spells;
+    },
     hideModal: function() {
       this.$refs["favoritesModal"].hide();
     },
@@ -286,11 +308,11 @@ export default {
 
         subcontainer.style.transform = `translateX(0px)`;
         self.pageCount = 0;
-        if (previousPage || nextPage) {
-          self.paginationEnabled = true;
-        } else {
-          self.paginationEnabled = false;
-        }
+        // if (previousPage || nextPage) {
+        //   self.paginationEnabled = true;
+        // } else {
+        //   self.paginationEnabled = false;
+        // }
       };
       this.delayExecution(10, executable);
     },
@@ -323,6 +345,9 @@ export default {
 };
 </script>
 <style>
+.max-height {
+  height: calc(100% - 3rem);
+}
 .extended-description:after {
   content: "&nbsp";
   visibility: hidden;
@@ -338,15 +363,16 @@ export default {
   --info-footer: 3em;
   --info-column-gap: 15px;
 }
+/* 
 input.form-control {
-  padding: 0.75rem 1.25rem;
-}
+  padding: 0.75rem 1.25rem; */
+/* } */
 .selected {
   color: var(--white);
   background-color: var(--primary);
 }
 .info-container {
-  max-height: calc(80vh - (var(--info-footer) + var(--modal-container-footer)));
+  max-height: calc(85vh - (var(--info-footer) + var(--modal-container-footer)));
   -webkit-column-width: 20rem;
   -moz-column-width: 20rem;
   column-width: 20rem;
@@ -369,7 +395,7 @@ input.form-control {
 }
 .info-subcontainer {
   text-overflow: ellipsis;
-  max-height: calc(80vh - (var(--info-footer) + var(--modal-container-footer)));
+  max-height: calc(85vh - (var(--info-footer) + var(--modal-container-footer)));
 }
 .info-container {
   -ms-overflow-style: none;
@@ -381,9 +407,11 @@ input.form-control {
 }
 .info-footer {
   height: var(--info-footer);
-  margin-top: -calc(
+  width: 100%;
+  /* margin-top: -calc(
     80vh - (var(--info-footer) + var(--modal-container-footer))
-  );
+  ); */
+  margin-top: auto;
 }
 .search-container {
   -webkit-user-select: none; /* Chrome all / Safari all */

@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <meta name="viewport" content="width=device-width, user-scalable=false;" />
-
     <spell-nav-bar
       @sideBarOn="captureSideBarStatus"
       @searchText="captureSearchText"
@@ -246,22 +245,33 @@ export default {
       return spells;
     },
     parseSpells(url) {
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error("HTTP error " + response.status);
-          }
-          return response.json();
+      let x = this.$jsonp(url);
+      this.$jsonp(url, { name: "MyName", age: 20 })
+        .then(json => {
+          // Success.
+          console.log(json);
         })
-        .then(data => {
-          let parsedData = [];
-          for (let i = 0; i < data.length; i++) {
-            data[i].index = this.spells.length + 1;
-            this.spells.push(data[i]);
-          }
-          this.spells = this.spells.sort((a, b) => a.name > b.name);
-          this.dataLoading = false;
+        .catch(err => {
+          // Failed.
         });
+      // .then(function() {
+      //   console.log("woop!");
+      //   if (!response.ok) {
+      //     throw new Error("HTTP error " + response.status);
+      //   }
+      //   return response.json();
+      // })
+      // .then(data => {
+      //   let parsedData = [];
+      //   console.log("woop!");
+
+      //   for (let i = 0; i < data.length; i++) {
+      //     data[i].index = this.spells.length + 1;
+      //     this.spells.push(data[i]);
+      //   }
+      //   this.spells = this.spells.sort((a, b) => a.name > b.name);
+      //   this.dataLoading = false;
+      // });
     },
     parseUrl() {
       let uri = window.location.search.substring(1);
@@ -276,10 +286,8 @@ export default {
   },
   mounted() {
     let self = this;
-    const firstUrl =
-      "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/Kspd33fi";
-    const secondUrl =
-      "https://cors-anywhere.herokuapp.com/https://pastebin.com/raw/cVkubnRJ";
+    const firstUrl = "https://curiouslycheddar.com/pastebin-1";
+    const secondUrl = "https://curiouslycheddar.com/pastebin-1";
     this.parseUrl();
 
     this.parseSpells(firstUrl);
