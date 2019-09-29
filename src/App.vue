@@ -245,15 +245,31 @@ export default {
       return spells;
     },
     parseSpells(url) {
-      let x = this.$jsonp(url);
-      this.$jsonp(url, { name: "MyName", age: 20 })
-        .then(json => {
-          // Success.
-          console.log(json);
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+          }
+          return response.json();
         })
-        .catch(err => {
-          // Failed.
+        .then(data => {
+          let parsedData = [];
+          for (let i = 0; i < data.length; i++) {
+            data[i].index = this.spells.length + 1;
+            this.spells.push(data[i]);
+          }
+          this.spells = this.spells.sort((a, b) => a.name > b.name);
+          this.dataLoading = false;
         });
+      // let x = this.$jsonp(url);
+      // this.$jsonp(url, { name: "MyName", age: 20 })
+      //   .then(json => {
+      //     // Success.
+      //     console.log(json);
+      //   })
+      //   .catch(err => {
+      //     // Failed.
+      //   });
       // .then(function() {
       //   console.log("woop!");
       //   if (!response.ok) {
