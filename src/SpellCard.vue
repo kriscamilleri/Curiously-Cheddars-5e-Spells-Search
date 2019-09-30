@@ -89,7 +89,7 @@ export default {
     },
     formattedRange: function() {
       return (
-        "<strong class='text-info'>R&nbsp;</strong>" +
+        "<strong class='text-info'>Range&nbsp;</strong>" +
         this.spell.range.replace("feet", "Feet")
       );
     },
@@ -113,7 +113,7 @@ export default {
       return description;
     },
     formattedDuration: function() {
-      let result = "<strong class='text-warning'>D&nbsp;</strong>";
+      let result = "<strong class='text-warning'>Duration&nbsp;</strong>";
       if (this.spell.concentration && this.spell.duration.length > 0) {
         let cleanedDuration = this.spell.duration;
         cleanedDuration = cleanedDuration.replace("Concentration, ", "");
@@ -125,7 +125,7 @@ export default {
     },
     formattedCastingTime: function() {
       return (
-        "<strong class='text-success'>C&nbsp;</strong>" +
+        "<strong class='text-success'>Cast&nbsp;</strong>" +
         this.spell.casting_time
       );
     },
@@ -154,24 +154,31 @@ export default {
 </script>
 <style>
 .details-text {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
 }
 
 .component-text {
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .badge-shrinker {
-  font-size: 0.85rem;
+  font-size: 1rem;
+}
+@media (max-width: 576px) {
+  .spell-card.card {
+    cursor: pointer;
+    min-height: 160px;
+    min-width: 80vw;
+    max-width: 80vw;
+  }
 }
 
 .card {
   cursor: pointer;
   min-height: 160px;
-  min-width: 15.8rem;
-  max-width: 15.8rem;
+  min-width: 18rem;
+  max-width: 18rem;
 }
-
 .navbar-brand {
   margin-right: 0.5rem;
 }

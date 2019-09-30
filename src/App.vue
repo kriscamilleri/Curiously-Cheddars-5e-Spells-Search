@@ -336,7 +336,7 @@ export default {
 
 h1,
 h2 {
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 
 a {
@@ -351,6 +351,7 @@ a {
 /* SIDEBAR */
 body {
   overflow-x: hidden;
+  font-size: 1rem;
 }
 
 #wrapper {

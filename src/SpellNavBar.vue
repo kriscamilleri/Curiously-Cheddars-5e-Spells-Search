@@ -108,7 +108,7 @@ export default {
 .nav-button a {
   color: #fff !important;
   display: inline-block;
-  font-weight: 400;
+  /* font-weight: 400; */
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
@@ -121,6 +121,6 @@ export default {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   font-family: "News Cycle", "Arial Narrow Bold", sans-serif;
-  font-weight: 700;
+  /* font-weight: 700; */
 }
 </style>

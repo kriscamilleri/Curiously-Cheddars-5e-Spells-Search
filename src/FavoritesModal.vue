@@ -117,29 +117,38 @@
       </div>
 
       <template slot="modal-footer">
-        <div class="w-100">
-          <input
-            id="generatedLink"
-            class="pb-1 d-inline-block"
-            v-if="generatedLink.length > 0"
-            readonly="readonly"
-            :value="generatedLink"
-          />
-          <a
-            class="btn btn-success"
-            id="copyLink"
-            v-if="generatedLink.length > 0"
-            :href="generatedLink"
-            target="_blank"
-          >Open</a>
-          <b-button
-            variant="success"
-            size
-            class="float-right mx-1"
-            v-on:click="generateLink"
-            :class="addedSpells.length === 0 ? 'disabled' : 'false'"
-          >Generate</b-button>
-          <b-button variant="dark" size class="float-right mx-1" v-on:click="hideModal">Cancel</b-button>
+        <div class="w-100 row">
+          <div class="col-md-6 my-1 d-flex">
+            <input
+              id="generatedLink"
+              class="pb-1 d-inline-block"
+              v-if="generatedLink.length > 0"
+              readonly="readonly"
+              :value="generatedLink"
+            />
+            <a
+              class="btn btn-success"
+              id="copyLink"
+              v-if="generatedLink.length > 0"
+              :href="generatedLink"
+              target="_blank"
+            >Open</a>
+          </div>
+          <div class="col-md-6 d-flex my-1 justify-content-end">
+            <b-button
+              variant="success"
+              size
+              class="mx-1"
+              v-on:click="generateLink"
+              :class="addedSpells.length === 0 ? 'disabled' : 'false'"
+            >Generate</b-button>
+            <b-button
+              variant="dark"
+              size
+              class="justify-content-end mx-1"
+              v-on:click="hideModal"
+            >Cancel</b-button>
+          </div>
         </div>
       </template>
     </b-modal>
@@ -328,7 +337,7 @@ export default {
       const subcontainer = document.getElementById("infoSubcontainer");
       const container = document.getElementById("infoContainer");
       // this.window.width = subcontainer.offsetWidth;
-      this.containerWidth = container.offsetWidth;
+      this.containerWidth = container ? container.offsetWidth : 0;
       const translate = this.pageCount * (this.containerWidth + 15);
       this.resetPage();
       // subcontainer.style.transform = `translateX(-${translate}px)`;
