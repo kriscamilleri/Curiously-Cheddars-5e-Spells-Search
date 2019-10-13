@@ -17,6 +17,7 @@
           class="my-2 mr-4 nav-button btn-primary"
           v-b-modal="'favoritesModal'"
         >Spellbook</b-nav-item>
+
         <b-nav-item
           href="#menu-toggle"
           class="my-2 mr-4 nav-button btn-info"

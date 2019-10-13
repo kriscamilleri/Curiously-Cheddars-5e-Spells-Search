@@ -12,7 +12,7 @@
           <p
             class="d-inline-block"
             v-if="generatedLink.length <= 0"
-          >Select as many spells as you'd like from above, and hit generate to create your character's spellbook.</p>
+          >Select as many spells as you'd like from below, and hit generate to create your character's spellbook.</p>
         </div>
       </div>
       <div class="max-height row mb-3">
@@ -118,7 +118,7 @@
 
       <template slot="modal-footer">
         <div class="w-100 row">
-          <div class="col-md-6 my-1 d-flex">
+          <div class="col-md-6 my-1 d-flex generated-container">
             <input
               id="generatedLink"
               class="pb-1 d-inline-block"
@@ -134,7 +134,7 @@
               target="_blank"
             >Open</a>
           </div>
-          <div class="col-md-6 d-flex my-1 justify-content-end">
+          <div class="col-md-6 d-flex my-1 justify-content-end generation-container">
             <b-button
               variant="success"
               size
@@ -492,5 +492,15 @@ input.form-control {
 .modal-body {
   padding: 1rem;
   margin-top: 0.5rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .generated-container + .generation-container,
+  .generation-container + .generated-container {
+    display: block !important;
+    margin: 0 auto !important;
+    margin-top: 2rem !important;
+    width: initial;
+  }
 }
 </style>

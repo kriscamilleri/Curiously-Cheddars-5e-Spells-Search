@@ -10,23 +10,26 @@
       header-bg-variant="primary"
       header-text-variant="white"
     >
-      <h4 class="card-title text-primary" data-toggle="collapse" aria-controls="collapseOne">
-        {{spell.name}}
-        <span class="badge-shrinker align-middle">
-          <b-badge variant="warning" v-if="spell.concentration == true">Conc</b-badge>
-          <b-badge variant="success" v-if="spell.ritual == true">Rit</b-badge>
-        </span>
-      </h4>
+      <h4
+        class="card-title text-primary"
+        data-toggle="collapse"
+        aria-controls="collapseOne"
+      >{{spell.name}}</h4>
       <h6 class="card-subtitle mb-2 text-muted" v-html="formattedSubtitle"></h6>
+      <span class="badge-shrinker align-middle">
+        <b-badge variant="warning" v-if="spell.concentration == true">Concentration</b-badge>
+        <b-badge variant="success" v-if="spell.ritual == true">Ritual</b-badge>
+      </span>
       <p class="card-text text-sm text-muted" align-h="start">
         <b-collapse :id="'descSpell'+spell.index" class="details-text text-justify">
           <br />
-          <strong>Description</strong>
+          <strong class="text-primary">Description</strong>
           <span v-html="spell.desc"></span>
-          <strong>Classes</strong>
+          <strong class="text-primary">Classes</strong>
           <p>{{spell.class}}</p>
-          <strong>Components</strong>
-          <p>{{spell.material != null ? spell.material : 'None.'}}</p>
+          <p v-html="formattedComponents"></p>
+          <strong class="text-primary">School</strong>
+          <p>{{spell.school}}</p>
         </b-collapse>
       </p>
     </b-card>
@@ -131,17 +134,21 @@ export default {
     },
     formattedComponents: function() {
       let array = [];
-      if (this.spell.somatic) {
-        array.push("Somatic");
-      }
-      if (this.spell.verbal) {
+      if (this.spell.components.includes("V")) {
         array.push("Verbal");
       }
-      if (this.spell.material) {
-        array.push("Material");
+      if (this.spell.components.includes("S")) {
+        array.push("Somatic");
+      }
+      if (this.spell.components.includes("M")) {
+        array.push(`Material (${this.spell.material})`);
       }
       if (array.length > 0) {
-        return "<strong>Components</strong><p>" + array.join(", ") + ".</p>";
+        return (
+          "<strong class='text-primary'>Components</strong><p>" +
+          array.join(", ") +
+          "</p>"
+        );
       }
       return "";
     },
