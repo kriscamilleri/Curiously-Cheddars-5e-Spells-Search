@@ -310,8 +310,8 @@ export default {
   },
   mounted() {
     let self = this;
-    const firstUrl = "https://pastebin.com/raw/cVkubnRJ";
-    const secondUrl = "https://pastebin.com/raw/Kspd33fi";
+    const firstUrl = "/pastebin-1";
+    const secondUrl = "/pastebin-2";
     this.parseUrl();
 
     this.parseSpells(firstUrl);
