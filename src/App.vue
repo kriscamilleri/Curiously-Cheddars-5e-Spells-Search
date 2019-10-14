@@ -310,12 +310,12 @@ export default {
   },
   mounted() {
     let self = this;
-    const firstUrl = "/spell_data_trimmed.json";
-    // const secondUrl = "/pastebin-2";
+    const firstUrl = "https://pastebin.com/raw/cVkubnRJ";
+    const secondUrl = "https://pastebin.com/raw/Kspd33fi";
     this.parseUrl();
 
     this.parseSpells(firstUrl);
-    // this.parseSpells(secondUrl);
+    this.parseSpells(secondUrl);
   }
 };
 </script>
