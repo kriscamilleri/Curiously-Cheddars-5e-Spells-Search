@@ -1,6 +1,9 @@
 # dungeons_and_dragons
 
-> spell search, selection, and print
+> spell search and spellbook creation for DnD
+
+www.curiouslycheddar.com
+
 
 ## Build Setup
 

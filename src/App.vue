@@ -94,7 +94,7 @@ export default {
         "warlock",
         "wizard"
       ],
-      sourceFilters: ["EE", "PHB", "SCAG", "XGTE"],
+      sourceFilters: ["EE", "PHB", "SCAG", "XGtE"],
       levelFilters: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       schoolFilters: [
         "Abjuration",
@@ -117,7 +117,7 @@ export default {
         "wizard"
       ],
       levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      sources: ["EE", "PHB", "SCAG", "UA TOBM"],
+      sources: ["EE", "PHB", "SCAG", "XGtE"],
       schools: [
         "Abjuration",
         "Conjuration",
@@ -310,12 +310,12 @@ export default {
   },
   mounted() {
     let self = this;
-    const firstUrl = "/spell_data_trimmed.json";
-    // const secondUrl = "/pastebin-2";
+    const firstUrl = "/pastebin-1";
+    const secondUrl = "/pastebin-2";
     this.parseUrl();
 
     this.parseSpells(firstUrl);
-    // this.parseSpells(secondUrl);
+    this.parseSpells(secondUrl);
   }
 };
 </script>
