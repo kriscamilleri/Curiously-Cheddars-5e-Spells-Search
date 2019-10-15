@@ -7,7 +7,7 @@
       @sideBarOn="captureSideBarStatus"
       @searchText="captureSearchText"
       @spells="spells"
-      :navTitle="spellBookTitle"
+      :navTitle="navTitle"
       :sideBarOn="sideBarOn"
     ></spell-nav-bar>
     <div id="wrapper" :class="{ toggled: sideBarOn }">
@@ -76,6 +76,7 @@ export default {
     return {
       spellBookFilter: [],
       spellBookTitle: "CC's Spell Search",
+      navTitle: "CC's Spell Search",
       // title: "DnD Search Master",
       dataLoading: true,
       sideBarOn: false,
@@ -302,7 +303,8 @@ export default {
         this.spellBookFilter = spellsString.split("-").map(c => parseInt(c));
       }
       if (spellBookTitle) {
-        this.spellBookTitle = spellBookTitle;
+        this.spellBookTitle = spellBookTitle + ` - ${this.spellBookTitle}`;
+        this.navTitle = spellBookTitle;
       }
 
       console.log(this.spellBookTitle);
@@ -310,8 +312,8 @@ export default {
   },
   mounted() {
     let self = this;
-    const firstUrl = "/pastebin-1";
-    const secondUrl = "/pastebin-2";
+    const firstUrl = "https://curiouslycheddar.com/pastebin-1";
+    const secondUrl = "https://curiouslycheddar.com/pastebin-2";
     this.parseUrl();
 
     this.parseSpells(firstUrl);

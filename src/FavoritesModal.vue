@@ -11,19 +11,18 @@
         <div class="col-md-12">
           <p
             class="d-inline-block"
-            v-if="generatedLink.length <= 0"
-          >Select as many spells as you'd like from below, and hit generate to create your character's spellbook.</p>
+          >Select as many spells as you'd like from below, give your Spellbook a name, and click Open Spellbook to open this site with only the spells you selected.</p>
         </div>
       </div>
       <div class="max-height row mb-3">
         <div class="col-md-6">
-          <div class="input-group mb-2">
+          <div class="input-group mb-1">
             <div class="input-group-prepend">
               <span class="input-group-text">Search</span>
             </div>
             <input type="text" v-model="searchString" class="form-control" />
           </div>
-          <div class="search-container border">
+          <div class="search-container border mb-3">
             <div class="card-sm">
               <ul class="list-group list-group-flush">
                 <li
@@ -38,7 +37,6 @@
               </ul>
             </div>
           </div>
-          <br />
           <div class="row">
             <div class="col-md-12">
               <div class="border">
@@ -52,7 +50,9 @@
                         v-model="spellBookName"
                       />
                       <h5 class="mt-4">Added Spells</h5>
-                      <div></div>
+                      <p v-if="addedSpells.length < 1">
+                        No Spells selected.
+                      </p>
 
                       <span
                         v-for="spell in addedSpells"
@@ -117,39 +117,22 @@
       </div>
 
       <template slot="modal-footer">
-        <div class="w-100 row">
-          <div class="col-md-6 my-1 d-flex generated-container">
-            <input
-              id="generatedLink"
-              class="pb-1 d-inline-block"
-              v-if="generatedLink.length > 0"
-              readonly="readonly"
-              :value="generatedLink"
-            />
-            <a
-              class="btn btn-success"
-              id="copyLink"
-              v-if="generatedLink.length > 0"
-              :href="generatedLink"
-              target="_blank"
-            >Open</a>
-          </div>
-          <div class="col-md-6 d-flex my-1 justify-content-end generation-container">
+          <div>
             <b-button
               variant="success"
               size
               class="mx-1"
-              v-on:click="generateLink"
               :class="addedSpells.length === 0 ? 'disabled' : 'false'"
-            >Generate</b-button>
+              :href="generatedLink"
+              target="_blank"
+            >Open Spellbook</b-button>
             <b-button
               variant="dark"
               size
-              class="justify-content-end mx-1"
+              class="float-right mx-1"
               v-on:click="hideModal"
             >Cancel</b-button>
           </div>
-        </div>
       </template>
     </b-modal>
   </div>
@@ -172,7 +155,7 @@ export default {
       paginationEnabled: true,
       nextEnabled: true,
       previousEnabled: true,
-      generatedLink: ""
+      // generatedLink: ""
     };
   },
   computed: {
@@ -188,7 +171,13 @@ export default {
         return this.selectedSpell.desc + "<p class='extended-description'></p>";
       }
       return "<p class='extended-description'></p>";
-    }
+    },
+    generatedLink: function(event) {
+      const spellList = this.addedSpells.map(c => c.index);
+      const joinedSpells = spellList.join("-");
+      const url = `${window.location.protocol}//${window.location.host}?spellbookname=${this.spellBookName}&spellbook=${joinedSpells}`;
+      return  url;
+    },
   },
   mounted() {
     // const container = document.getElementsByClassName("info-container")[0];
@@ -229,14 +218,7 @@ export default {
         this.addedSpells.push(spell);
       }
     },
-    generateLink: function(event) {
-      event.preventDefault();
-      const spellList = this.addedSpells.map(c => c.index);
-      const joinedSpells = spellList.join("-");
-      const url = `${window.location.protocol}//${window.location.host}?spellbookname=${this.spellBookName}&spellbook=${joinedSpells}`;
-      this.generatedLink = url;
-      console.log(url);
-    },
+    
     previousPage: function() {
       if (!this.previousEnabled) {
         return;
@@ -494,13 +476,4 @@ input.form-control {
   margin-top: 0.5rem;
 }
 
-@media only screen and (max-width: 768px) {
-  .generated-container + .generation-container,
-  .generation-container + .generated-container {
-    display: block !important;
-    margin: 0 auto !important;
-    margin-top: 2rem !important;
-    width: initial;
-  }
-}
 </style>
