@@ -11,44 +11,51 @@
         <div class="col-md-12">
           <p
             class="d-inline-block"
-          >Select as many spells as you'd like from below, give your Spellbook a name, and click Open Spellbook to open this site with only the spells you selected.</p>
+          >Select as many spells as you'd like from below, give your Spellbook a name, and click Open Spellbook to open a new page with only the spells you selected.</p>
         </div>
       </div>
       <div class="max-height row mb-3">
         <div class="col-md-6">
-          <div class="input-group mb-1">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Search</span>
-            </div>
-            <input type="text" v-model="searchString" class="form-control" />
+          <div class=" border border-secondary p-3">
+            <div class="input-group mb-1 ">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Search</span>
+              </div>
+              <input type="text" v-model="searchString" class="form-control" />
           </div>
-          <div class="search-container border mb-3">
-            <div class="card-sm">
-              <ul class="list-group list-group-flush">
-                <li
-                  class="list-group-item"
-                  :class="selectedSpell.index === spell.index ? 'selected' : ''"
-                  v-for="spell in filteredSpells"
-                  v-on:click="selectSpell(spell.index)"
-                  :spell="spell"
-                  :key="spell.index"
-                >{{spell.name}}</li>
-                <li class="list-group-item" v-if="filteredSpells.length === 0">No spells found.</li>
-              </ul>
+          <div class="search-container border ">
+              <div class="card-sm">
+                <ul class="list-group list-group-flush">
+                  <li
+                    class="list-group-item"
+                    :class="selectedSpell.index === spell.index ? 'selected' : ''"
+                    v-for="spell in filteredSpells"
+                    v-on:click="selectSpell(spell.index)"
+                    :spell="spell"
+                    :key="spell.index"
+                  >{{spell.name}}</li>
+                  <li class="list-group-item" v-if="filteredSpells.length === 0">No spells found.</li>
+                </ul>
+              </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <div class="border">
+              <div class="border border-primary">
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="m-3">
-                      <h5>Spellbook Name</h5>
+                      <h5 class="mb-3">{{spellBookTitle}}</h5>
+                       <!-- 
                       <input
                         class="input mt-2"
                         placeholder="ex. Perrywook's Book"
                         v-model="spellBookName"
-                      />
+                      /> -->
+                      <label class="sr-only" for="inline-form-input-username">Spellbook Name</label>
+                      <b-input-group prepend="Spellbook Name" class="mb-2 mr-sm-2 mb-sm-0">
+                        <b-input id="inline-form-input-username" placeholder="Spellbook Name" v-model="spellBookName"></b-input>
+                      </b-input-group>
                       <h5 class="mt-4">Added Spells</h5>
                       <p v-if="addedSpells.length < 1">
                         No Spells selected.
@@ -115,7 +122,6 @@
           </div>
         </div>
       </div>
-
       <template slot="modal-footer">
           <div>
             <b-button
@@ -178,6 +184,9 @@ export default {
       const url = `${window.location.protocol}//${window.location.host}?spellbookname=${this.spellBookName}&spellbook=${joinedSpells}`;
       return  url;
     },
+    spellBookTitle(){
+      return this.spellBookName.length > 0 ? `${this.spellBookName} Spellbook` : "Your Spellbook"
+    }
   },
   mounted() {
     // const container = document.getElementsByClassName("info-container")[0];
