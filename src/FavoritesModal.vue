@@ -16,7 +16,7 @@
       </div>
       <div class="max-height row mb-3">
         <div class="col-md-6">
-          <div class=" border border-secondary p-3">
+          <div class=" border border-secondary p-3 mb-4">
             <div class="input-group mb-1 ">
               <div class="input-group-prepend">
                 <span class="input-group-text">Search</span>
