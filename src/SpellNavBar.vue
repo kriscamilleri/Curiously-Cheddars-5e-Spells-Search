@@ -1,6 +1,14 @@
 <template>
   <b-navbar toggleable="md" type="light" variant="white" class="bg-light fixed-top">
-    <b-navbar-brand href="#">{{navTitle}}</b-navbar-brand>
+    <b-navbar-brand class="mega-brand" href="#">{{navTitle}}</b-navbar-brand>
+    <b-form-input
+      size="md"
+      class="search-input mini-search"
+      type="text"
+      @input="toggleSearch"
+      v-model="localSearchText"
+      placeholder="Search"
+    />
     <b-navbar-toggle target="nav_collapse" class="float-right navbar-toggle"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse" class>
       <b-navbar-nav>
@@ -17,7 +25,6 @@
           class="my-2 mr-4 nav-button btn-primary"
           v-b-modal="'favoritesModal'"
         >Spellbook</b-nav-item>
-
         <b-nav-item
           href="#menu-toggle"
           class="my-2 mr-4 nav-button btn-info"
@@ -30,12 +37,13 @@
       <div class="input-group">
         <b-form-input
           size="md"
-          class
+          class="search-input"
           type="text"
           @input="toggleSearch"
           v-model="localSearchText"
           placeholder="Search"
         />
+        <a target="_self" href="#" class="navbar-brand mini-brand">CC's Spell Search</a>
       </div>
     </b-collapse>
   </b-navbar>
@@ -87,8 +95,28 @@ export default {
     box-shadow: 0 0.125rem 0.25rem rgba(72, 72, 72, 0.075) !important;
     border: 1px solid #e4e5e7 !important;
   }
+  a.mini-brand {
+    display: block;
+  }
+  a.mega-brand {
+    display: none;
+  }
+  #nav_collapse .input-group > input.form-control.search-input {
+    width: 100%;
+    display: none;
+  }
+  input.form-control.mini-search {
+    display: block;
+    width: max-content;
+  }
 }
 
+.mini-brand {
+  display: none;
+}
+input.mini-search {
+  display: none;
+}
 .input-group {
   max-width: 20.8rem;
   margin-right: 0.5rem;
@@ -123,5 +151,10 @@ export default {
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   font-family: "News Cycle", "Arial Narrow Bold", sans-serif;
   /* font-weight: 700; */
+}
+
+li .nav-link {
+  width: 100%;
+  text-align: left;
 }
 </style>
