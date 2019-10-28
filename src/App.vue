@@ -313,10 +313,10 @@ export default {
   mounted() {
     let self = this;
     const firstUrl = "/pastebin-1";
-    const secondUrl = "/pastebin-2";
+    const secondUrl = "/spell_data_trimmed.json";
     this.parseUrl();
 
-    this.parseSpells(firstUrl);
+    // this.parseSpells(firstUrl);
     this.parseSpells(secondUrl);
   }
 };
@@ -363,18 +363,19 @@ body {
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
-
+/* 
 #wrapper.toggled {
   padding-right: 380px;
-}
+} */
 
 #sidebar-wrapper {
   z-index: 1029;
   position: fixed;
-  right: 380px;
-  width: 0;
+  /* right: 380px; */
+  /* width: 400px; */
+  /* width: 0; */
   height: 100%;
-  margin-right: -380px;
+  /* margin-right: -380px; */
   overflow-y: auto;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
@@ -384,7 +385,7 @@ body {
 }
 
 #wrapper.toggled #sidebar-wrapper {
-  width: 380px;
+  /* width: 380px; */
 }
 
 #page-content-wrapper {
@@ -395,7 +396,7 @@ body {
 
 #wrapper.toggled #page-content-wrapper {
   position: absolute;
-  margin-left: -380px;
+  /* margin-left: -380px; */
 }
 
 /* Sidebar Styles */
@@ -424,16 +425,24 @@ body {
   background: none;
 }
 
+#sidebar-wrapper {
+  width: 100vw;
+  transform: translateX(100vw);
+}
+#wrapper.toggled #sidebar-wrapper {
+  transform: translateX(0vw);
+}
 @media (min-width: 768px) {
   #wrapper {
     padding-right: 0;
   }
 
   #sidebar-wrapper {
-    width: 0;
+    width: 40vw;
+    transform: translateX(100vw);
   }
   #wrapper.toggled #sidebar-wrapper {
-    width: 380px;
+    transform: translateX(60vw);
   }
   #page-content-wrapper {
     position: relative;

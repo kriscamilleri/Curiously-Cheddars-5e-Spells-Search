@@ -244,7 +244,7 @@ export default {
 <style>
 .faux-column div {
   flex: 0 0 50%;
-  max-width: 50%;
+  /* max-width: 50%; */
 }
 .filter-header {
   margin-top: 10px;
