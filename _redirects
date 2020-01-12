@@ -1,3 +1,4 @@
 # Redirects from what the browser requests to what we serve
 /pastebin-1            https://pastebin.com/raw/TuXeZ4WC            200
 /pastebin              https://pastebin.com/raw/TuXeZ4WC            200
+/pastebin-3             https://pastebin.com/raw/5kGnKEpB            200
