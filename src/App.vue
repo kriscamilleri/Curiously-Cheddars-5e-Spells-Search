@@ -200,7 +200,10 @@ export default {
 
       if (this.classFilters.length != this.classes.length) {
         spells = spells.filter(function(spell) {
-          let x = spell.class.split(",");
+          let x = spell.class.split(",").map(c => {
+            return c.trim();
+          });
+          console.log(x);
           let intersection = x.filter(n => classFilters.includes(n));
           if (intersection.length > 0) {
             return spell;
@@ -258,41 +261,16 @@ export default {
           return response.json();
         })
         .then(data => {
-          let parsedData = [];
-          for (let i = 0; i < data.length; i++) {
-            data[i].index = this.spells.length + 1;
-            this.spells.push(data[i]);
-          }
-          this.spells = this.spells.sort((a, b) => a.name > b.name);
+          console.log(data);
+          this.spells = data.sort((a, b) => {
+            const concatA =
+              a.level != "Cantrip" ? `${a.level}${a.name}` : `${0}${a.name}`;
+            const concatB =
+              b.level != "Cantrip" ? `${b.level}${a.name}` : `${0}${b.name}`;
+            return concatA > concatB;
+          });
           this.dataLoading = false;
         });
-      // let x = this.$jsonp(url);
-      // this.$jsonp(url, { name: "MyName", age: 20 })
-      //   .then(json => {
-      //     // Success.
-      //     console.log(json);
-      //   })
-      //   .catch(err => {
-      //     // Failed.
-      //   });
-      // .then(function() {
-      //   console.log("woop!");
-      //   if (!response.ok) {
-      //     throw new Error("HTTP error " + response.status);
-      //   }
-      //   return response.json();
-      // })
-      // .then(data => {
-      //   let parsedData = [];
-      //   console.log("woop!");
-
-      //   for (let i = 0; i < data.length; i++) {
-      //     data[i].index = this.spells.length + 1;
-      //     this.spells.push(data[i]);
-      //   }
-      //   this.spells = this.spells.sort((a, b) => a.name > b.name);
-      //   this.dataLoading = false;
-      // });
     },
     parseUrl() {
       let uri = window.location.search.substring(1);
@@ -312,12 +290,9 @@ export default {
   },
   mounted() {
     let self = this;
-    const firstUrl = "/pastebin-1";
-    const secondUrl = "/spell_data_trimmed.json";
     this.parseUrl();
-
-    // this.parseSpells(firstUrl);
-    this.parseSpells(secondUrl);
+    const url = "https://www.curiouslycheddar.com/pastebin-3";
+    this.parseSpells(url);
   }
 };
 </script>

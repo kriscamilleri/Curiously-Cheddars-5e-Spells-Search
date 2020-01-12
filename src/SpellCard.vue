@@ -24,7 +24,7 @@
         <b-collapse :id="'descSpell'+spell.index" class="details-text text-justify">
           <br />
           <strong class="text-primary">Description</strong>
-          <span v-html="spell.desc"></span>
+          <span v-html="formattedDescription"></span>
           <strong class="text-primary">Classes</strong>
           <p>{{spell.class}}</p>
           <p v-html="formattedComponents"></p>
@@ -43,29 +43,37 @@ export default {
     spell: {
       index: Number,
       name: String,
-      desc: String,
+      desc: Array,
       higherLevel: String,
       range: String,
       ritual: Boolean,
       duration: String,
       concentration: Boolean,
       castingTime: String,
-      level: Number,
+      level: String,
       school: String,
       class: Array,
-      levelDesc: String,
-      classDesc: String,
-      rangeDesc: String,
-      componentDesc: String,
-      verbal: Boolean,
-      material: Boolean,
-      somatic: Boolean,
       source: String,
-      page: Number
+      page: String
     }
   },
   methods: {
-    expandCard: function() {}
+    expandCard() {},
+    convertJsonArrayToHtml(jsonArr) {
+      let text = this.splitMulti(jsonArr, ["'],['", "'], ['"]);
+      text[0] = text[0].replace("['", "");
+      text[text.length - 1] = text[text.length - 1].replace(/']/g, "");
+      let html = `<p>${text.join("</p><p>")}</p>`;
+      return html;
+    },
+    splitMulti(str, tokens) {
+      var tempChar = tokens[0]; // We can use the first token as a temporary join character
+      for (var i = 1; i < tokens.length; i++) {
+        str = str.split(tokens[i]).join(tempChar);
+      }
+      str = str.split(tempChar);
+      return str;
+    }
   },
   watch: {},
   computed: {
@@ -82,13 +90,7 @@ export default {
       );
     },
     formattedLevel: function() {
-      let result = "";
-      if (this.spell.level == 0) {
-        result = "Cantrip";
-      } else {
-        result = "Level " + this.spell.level;
-      }
-      return "<strong class='text-danger'>" + result + "</strong>";
+      return "<strong class='text-danger'>" + this.spell.level + "</strong>";
     },
     formattedRange: function() {
       return (
@@ -112,7 +114,14 @@ export default {
       return classes;
     },
     formattedDescription: function() {
-      let description = "<strong>Description </strong>" + this.spell.desc;
+      let description = this.convertJsonArrayToHtml(this.spell.desc);
+
+      if (this.spell.higherLevel) {
+        let higherLevel =
+          "<strong>At Higher Levels </strong>" +
+          this.convertJsonArrayToHtml(this.spell.higherLevel);
+        description += higherLevel;
+      }
       return description;
     },
     formattedDuration: function() {
@@ -128,8 +137,8 @@ export default {
     },
     formattedCastingTime: function() {
       return (
-        "<strong class='text-success'>Cast&nbsp;</strong>" +
-        this.spell.casting_time
+        "<strong class='text-success'>Casting&nbsp;</strong>" +
+        this.spell.castingTime
       );
     },
     formattedComponents: function() {
