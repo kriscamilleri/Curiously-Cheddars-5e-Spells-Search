@@ -16,14 +16,14 @@
       </div>
       <div class="max-height row mb-3">
         <div class="col-md-6">
-          <div class=" border border-secondary p-3 mb-4">
-            <div class="input-group mb-1 ">
+          <div class="border border-secondary p-3 mb-4">
+            <div class="input-group mb-1">
               <div class="input-group-prepend">
                 <span class="input-group-text">Search</span>
               </div>
               <input type="text" v-model="searchString" class="form-control" />
-          </div>
-          <div class="search-container border ">
+            </div>
+            <div class="search-container border">
               <div class="card-sm">
                 <ul class="list-group list-group-flush">
                   <li
@@ -46,20 +46,22 @@
                   <div class="col-lg-12">
                     <div class="m-3">
                       <h5 class="mb-3">{{spellBookTitle}}</h5>
-                       <!-- 
+                      <!-- 
                       <input
                         class="input mt-2"
                         placeholder="ex. Perrywook's Book"
                         v-model="spellBookName"
-                      /> -->
+                      />-->
                       <label class="sr-only" for="inline-form-input-username">Spellbook Name</label>
                       <b-input-group prepend="Spellbook Name" class="mb-2 mr-sm-2 mb-sm-0">
-                        <b-input id="inline-form-input-username" placeholder="Spellbook Name" v-model="spellBookName"></b-input>
+                        <b-input
+                          id="inline-form-input-username"
+                          placeholder="Spellbook Name"
+                          v-model="spellBookName"
+                        ></b-input>
                       </b-input-group>
                       <h5 class="mt-4">Added Spells</h5>
-                      <p v-if="addedSpells.length < 1">
-                        No Spells selected.
-                      </p>
+                      <p v-if="addedSpells.length < 1">No Spells selected.</p>
 
                       <span
                         v-for="spell in addedSpells"
@@ -67,7 +69,7 @@
                         :key="spell.index"
                         class="btn btn-dark mt-2 mr-2 border-primary border"
                       >
-                        <small>Lvl{{spell.level}}</small>
+                        <small>Lvl{{selectedSpell.level}}</small>
                         {{spell.name}}
                         <small
                           class="border-primary border-left px-1"
@@ -91,11 +93,20 @@
                   >Level {{selectedSpell.level}} - {{selectedSpell.school}}</h5>
                   <small class="text-primary">{{selectedSpell.class}}</small>
                 </span>
-                <div
+                <!-- <div
                   class="text-justify"
                   :class="this.selectedSpell.desc ? '' : 'invisible'"
                   v-html="extendedDescription"
-                ></div>
+                ></div>-->
+                <span class="extended-description">
+                  <strong v-if="selectedSpell.index" class="d-block pt-2 text-primary">Description</strong>
+                  <span v-html="formattedDescription"></span>
+                  <strong v-if="selectedSpell.index" class="text-primary">Classes</strong>
+                  <p>{{selectedSpell.class}}</p>
+                  <p v-html="formattedComponents"></p>
+                  <strong v-if="selectedSpell.index" class="text-primary">School</strong>
+                  <p>{{selectedSpell.school}}</p>
+                </span>
               </div>
             </div>
             <div
@@ -123,22 +134,17 @@
         </div>
       </div>
       <template slot="modal-footer">
-          <div>
-            <b-button
-              variant="success"
-              size
-              class="mx-1"
-              :class="addedSpells.length === 0 ? 'disabled' : 'false'"
-              :href="generatedLink"
-              target="_blank"
-            >Open Spellbook</b-button>
-            <b-button
-              variant="dark"
-              size
-              class="float-right mx-1"
-              v-on:click="hideModal"
-            >Cancel</b-button>
-          </div>
+        <div>
+          <b-button
+            variant="success"
+            size
+            class="mx-1"
+            :class="addedSpells.length === 0 ? 'disabled' : 'false'"
+            :href="generatedLink"
+            target="_blank"
+          >Open Spellbook</b-button>
+          <b-button variant="dark" size class="float-right mx-1" v-on:click="hideModal">Cancel</b-button>
+        </div>
       </template>
     </b-modal>
   </div>
@@ -160,7 +166,7 @@ export default {
       pageCount: 0,
       paginationEnabled: true,
       nextEnabled: true,
-      previousEnabled: true,
+      previousEnabled: true
       // generatedLink: ""
     };
   },
@@ -181,11 +187,110 @@ export default {
     generatedLink: function(event) {
       const spellList = this.addedSpells.map(c => c.index);
       const joinedSpells = spellList.join("-");
-      const url = `${window.location.protocol}//${window.location.host}?spellbookname=${this.spellBookName}&spellbook=${joinedSpells}`;
-      return  url;
+      const url = `${window.location.protocol}//${
+        window.location.host
+      }?spellbookname=${this.spellBookName}&spellbook=${joinedSpells}`;
+      return url;
     },
-    spellBookTitle(){
-      return this.spellBookName.length > 0 ? `${this.spellBookName} Spellbook` : "Your Spellbook"
+    spellBookTitle() {
+      return this.spellBookName.length > 0
+        ? `${this.spellBookName} Spellbook`
+        : "Your Spellbook";
+    },
+    formattedSubtitle: function() {
+      return (
+        this.formattedLevel +
+        ", " +
+        this.formattedRange +
+        ",<br> " +
+        this.formattedDuration +
+        ", " +
+        this.formattedCastingTime +
+        "."
+      );
+    },
+    formattedLevel: function() {
+      return (
+        "<strong class='text-danger'>" + this.selectedSpell.level + "</strong>"
+      );
+    },
+    formattedRange: function() {
+      return (
+        "<strong class='text-info'>Range&nbsp;</strong>" +
+        this.selectedSpell.range.replace("feet", "Feet")
+      );
+    },
+    formattedDetails: function() {
+      let description = this.formattedDescription;
+      let classes = this.formattedClasses;
+      let components = this.formattedComponents;
+      return description + classes + components;
+    },
+    formattedClasses: function() {
+      // let classArr = this.spell.class;
+      let classArray = this.selectedSpell.class.split(",");
+
+      let classes =
+        "<strong>Classes</strong><p>" + classArray.join(", ") + ".</p>";
+
+      return classes;
+    },
+    formattedDescription: function() {
+      if (this.selectedSpell.index) {
+        let description = this.convertJsonArrayToHtml(this.selectedSpell.desc);
+        if (this.selectedSpell.higherLevel) {
+          let higherLevel =
+            "<strong>At Higher Levels </strong>" +
+            this.convertJsonArrayToHtml(this.selectedSpell.higherLevel);
+          description += higherLevel;
+        }
+        return description;
+      }
+    },
+    formattedDuration: function() {
+      let result = "<strong class='text-warning'>Duration&nbsp;</strong>";
+      if (
+        this.selectedSpell.concentration &&
+        this.selectedSpell.duration.length > 0
+      ) {
+        let cleanedDuration = this.selectedSpell.duration;
+        cleanedDuration = cleanedDuration.replace("Concentration, ", "");
+        result += cleanedDuration[0].toUpperCase() + cleanedDuration.slice(1);
+      } else {
+        result += this.selectedSpell.duration;
+      }
+      return result; // capitalize first letter
+    },
+    formattedCastingTime: function() {
+      return (
+        "<strong class='text-success'>Casting&nbsp;</strong>" +
+        this.selectedSpell.castingTime
+      );
+    },
+    formattedComponents: function() {
+      let array = [];
+      if (this.selectedSpell.components) {
+        if (this.selectedSpell.components.includes("V")) {
+          array.push("Verbal");
+        }
+        if (this.selectedSpell.components.includes("S")) {
+          array.push("Somatic");
+        }
+        if (this.selectedSpell.components.includes("M")) {
+          array.push(`Material (${this.selectedSpell.material})`);
+        }
+        if (array.length > 0) {
+          return (
+            "<strong class='text-primary'>Components</strong><p>" +
+            array.join(", ") +
+            "</p>"
+          );
+        }
+      }
+      return "";
+    },
+    classColor: function() {
+      return "muted";
     }
   },
   mounted() {
@@ -210,6 +315,21 @@ export default {
       }
       this.addedSpells = spells;
     },
+    convertJsonArrayToHtml(jsonArr) {
+      let text = this.splitMulti(jsonArr, ["'],['", "'], ['"]);
+      text[0] = text[0].replace("['", "");
+      text[text.length - 1] = text[text.length - 1].replace(/']/g, "");
+      let html = `<p >${text.join("</p><p>")}</p>`;
+      return html;
+    },
+    splitMulti(str, tokens) {
+      var tempChar = tokens[0]; // We can use the first token as a temporary join character
+      for (var i = 1; i < tokens.length; i++) {
+        str = str.split(tokens[i]).join(tempChar);
+      }
+      str = str.split(tempChar);
+      return str;
+    },
     hideModal: function() {
       this.$refs["favoritesModal"].hide();
     },
@@ -227,7 +347,7 @@ export default {
         this.addedSpells.push(spell);
       }
     },
-    
+
     previousPage: function() {
       if (!this.previousEnabled) {
         return;
@@ -484,5 +604,4 @@ input.form-control {
   padding: 1rem;
   margin-top: 0.5rem;
 }
-
 </style>
