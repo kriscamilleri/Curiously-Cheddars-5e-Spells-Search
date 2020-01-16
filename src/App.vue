@@ -134,20 +134,23 @@ export default {
   computed: {
     filteredSpells: function() {
       var searchText = this.searchText;
-      let spells = this.spells;
-      spells = this.filterSpellBook(spells);
-      spells = this.filterSearch(spells, searchText);
-      spells = this.filterClasses(spells);
-      spells = this.filterLevels(spells);
-      spells = this.filterSources(spells);
-      spells = this.filterSchools(spells);
-      this.spellSize = spells.length;
+      if (this.spells) {
+        let spells = this.spells;
+        spells = this.filterSpellBook(spells);
+        spells = this.filterSearch(spells, searchText);
+        spells = this.filterClasses(spells);
+        spells = this.filterLevels(spells);
+        spells = this.filterSources(spells);
+        spells = this.filterSchools(spells);
+        this.spellSize = spells.length;
 
-      const firstSpellIndex = (this.currentPage - 1) * this.pageSize;
-      const lastSpellIndex = this.currentPage * this.pageSize;
+        const firstSpellIndex = (this.currentPage - 1) * this.pageSize;
+        const lastSpellIndex = this.currentPage * this.pageSize;
 
-      spells = spells.slice(firstSpellIndex, lastSpellIndex);
-      return spells;
+        spells = spells.slice(firstSpellIndex, lastSpellIndex);
+        return spells;
+      }
+      return [];
     }
   },
   methods: {
@@ -187,9 +190,10 @@ export default {
       if (this.spellBookFilter.length == 0) {
         return spells;
       }
-      console.log(this.spellBookFilter);
+      console.log(spells);
+
       const filteredSpells = spells.filter(
-        c => this.spellBookFilter.indexOf(c.index) !== -1
+        c => this.spellBookFilter.indexOf(parseInt(c.index)) !== -1
       );
       return filteredSpells;
     },
