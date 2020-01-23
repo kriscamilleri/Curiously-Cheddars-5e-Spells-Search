@@ -1,47 +1,61 @@
 <template>
   <div id="app">
     <title>{{spellBookTitle}}</title>
-
     <meta name="viewport" content="width=device-width, user-scalable=false;" />
-    <spell-nav-bar
-      @sideBarOn="captureSideBarStatus"
-      @searchText="captureSearchText"
-      @spells="spells"
-      :navTitle="navTitle"
-      :sideBarOn="sideBarOn"
-    ></spell-nav-bar>
-    <div id="wrapper" :class="{ toggled: sideBarOn }">
-      <div id="sidebar-wrapper" class="bg-light">
-        <spell-filters
-          :classFilters="classFilters"
-          @classFilters="captureClassFilters"
-          :levelFilters="levelFilters"
-          @levelFilters="captureLevelFilters"
-          :sourceFilters="sourceFilters"
-          @sourceFilters="captureSourceFilters"
-          :schoolFilters="schoolFilters"
-          @schoolFilters="captureSchoolFilters"
-        ></spell-filters>
-      </div>
-      <!-- <add-spell></add-spell> -->
-      <favorites-modal :spells="spells"></favorites-modal>
-      <div id="page-content-wrapper">
-        <b-container fluid class="bv-example-row m-1">
-          <b-row :class="{ 'd-none': dataLoading }" id="spellContainer" align-h="center">
-            <spell-card v-for="r in filteredSpells" :spell="r" :key="r.index" class="m-2"></spell-card>
-          </b-row>
-          <div v-if="dataLoading" class="text-center p-5">
-            <h2>Loading data...</h2>
-          </div>
-          <b-pagination
-            align="center"
-            class="p-4 mt-4"
-            v-model="currentPage"
-            :total-rows="spellSize"
-            :per-page="pageSize"
-            aria-controls="spellContainer"
-          ></b-pagination>
-        </b-container>
+
+    <div class="print-mode" v-if="printView !== true">
+      <b-container fluid class="bv-example-row m-1">
+        <b-row :class="{ 'd-none': dataLoading }" id="spellContainer" align-h="center">
+          <spell-card v-for="r in spells" :spell="r" :key="r.index" class="m-2"></spell-card>
+        </b-row>
+        <div v-if="dataLoading" class="text-center p-5">
+          <h2>Loading data...</h2>
+        </div>
+      </b-container>
+    </div>
+    <div v-else>
+      <meta name="viewport" content="width=device-width, user-scalable=false;" />
+
+      <spell-nav-bar
+        @sideBarOn="captureSideBarStatus"
+        @searchText="captureSearchText"
+        @spells="spells"
+        :navTitle="navTitle"
+        :sideBarOn="sideBarOn"
+      ></spell-nav-bar>
+      <div id="wrapper" :class="{ toggled: sideBarOn }">
+        <div id="sidebar-wrapper" class="bg-light">
+          <spell-filters
+            :classFilters="classFilters"
+            @classFilters="captureClassFilters"
+            :levelFilters="levelFilters"
+            @levelFilters="captureLevelFilters"
+            :sourceFilters="sourceFilters"
+            @sourceFilters="captureSourceFilters"
+            :schoolFilters="schoolFilters"
+            @schoolFilters="captureSchoolFilters"
+          ></spell-filters>
+        </div>
+        <!-- <add-spell></add-spell> -->
+        <favorites-modal :spells="spells"></favorites-modal>
+        <div id="page-content-wrapper">
+          <b-container fluid class="bv-example-row m-1">
+            <b-row :class="{ 'd-none': dataLoading }" id="spellContainer" align-h="center">
+              <spell-card v-for="r in filteredSpells" :spell="r" :key="r.index" class="m-2"></spell-card>
+            </b-row>
+            <div v-if="dataLoading" class="text-center p-5">
+              <h2>Loading data...</h2>
+            </div>
+            <b-pagination
+              align="center"
+              class="p-4 mt-4"
+              v-model="currentPage"
+              :total-rows="spellSize"
+              :per-page="pageSize"
+              aria-controls="spellContainer"
+            ></b-pagination>
+          </b-container>
+        </div>
       </div>
     </div>
   </div>
@@ -128,7 +142,8 @@ export default {
         "Illusion",
         "Necromancy",
         "Transmutation"
-      ]
+      ],
+      printView: false
     };
   },
   computed: {
@@ -306,7 +321,29 @@ export default {
     display: inline-block;
     column-break-inside: avoid;
   }*/
-
+@media print {
+  body {
+    overflow: auto;
+    height: auto;
+  }
+}
+.print-mode body,
+.print-mode h1,
+.print-mode h2,
+.print-mode h3,
+.print-mode ol,
+.print-mode ul,
+.print-mode div {
+  width: auto;
+  border: 0;
+  margin: 0 5%;
+  padding: 0;
+  float: none;
+  position: static;
+  overflow: visible !important;
+  page-break-after: always !important;
+  height: auto !important;
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -361,10 +398,6 @@ body {
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
   margin-top: -10px;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-  /* width: 380px; */
 }
 
 #page-content-wrapper {

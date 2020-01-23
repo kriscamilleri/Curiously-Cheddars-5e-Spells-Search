@@ -98,7 +98,7 @@
                   :class="this.selectedSpell.desc ? '' : 'invisible'"
                   v-html="extendedDescription"
                 ></div>-->
-                <span class="extended-description">
+                <span class="extended-description text-justify">
                   <strong v-if="selectedSpell.index" class="d-block pt-2 text-primary">Description</strong>
                   <span v-html="formattedDescription"></span>
                   <strong v-if="selectedSpell.index" class="text-primary">Classes</strong>
