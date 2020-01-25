@@ -4,14 +4,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=false;" />
 
     <div class="print-mode" v-if="printView !== true">
-      <b-container fluid class="bv-example-row m-1">
-        <b-row :class="{ 'd-none': dataLoading }" id="spellContainer" align-h="center">
-          <spell-card v-for="r in spells" :spell="r" :key="r.index" class="m-2"></spell-card>
-        </b-row>
-        <div v-if="dataLoading" class="text-center p-5">
-          <h2>Loading data...</h2>
-        </div>
-      </b-container>
+      <print :spells="spells"></print>
     </div>
     <div v-else>
       <meta name="viewport" content="width=device-width, user-scalable=false;" />
@@ -73,15 +66,19 @@ Filter fixed width when closing
 */
 
 import SpellNavBar from "./SpellNavBar.vue";
+import SpellParser from "./mixins/SpellParser.vue";
 import SpellCard from "./SpellCard.vue";
 import AddSpell from "./AddSpell.vue";
+import Print from "./Print.vue";
 import SpellFilters from "./SpellFilters.vue";
 import FavoritesModal from "./FavoritesModal.vue";
 
 export default {
+  mixins: [SpellParser],
   components: {
     SpellCard,
     // AddSpell,
+    Print,
     FavoritesModal,
     SpellNavBar,
     SpellFilters
@@ -321,29 +318,7 @@ export default {
     display: inline-block;
     column-break-inside: avoid;
   }*/
-@media print {
-  body {
-    overflow: auto;
-    height: auto;
-  }
-}
-.print-mode body,
-.print-mode h1,
-.print-mode h2,
-.print-mode h3,
-.print-mode ol,
-.print-mode ul,
-.print-mode div {
-  width: auto;
-  border: 0;
-  margin: 0 5%;
-  padding: 0;
-  float: none;
-  position: static;
-  overflow: visible !important;
-  page-break-after: always !important;
-  height: auto !important;
-}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
