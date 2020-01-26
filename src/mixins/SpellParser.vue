@@ -4,11 +4,6 @@ export default {
   created: function() {
     this.greetings();
   },
-  methods: {
-    greetings: function() {
-      console.log("Howdy my good fellow!");
-    }
-  },
   props: {
     spell: {
       index: Number,
@@ -27,81 +22,99 @@ export default {
       page: String
     }
   },
-  computed: {
-    formattedSubtitle: function() {
+  methods: {
+    convertJsonArrayToHtml(jsonArr) {
+      let text = this.splitMulti(jsonArr, ["'],['", "'], ['"]);
+      text[0] = text[0].replace("['", "");
+      text[text.length - 1] = text[text.length - 1].replace(/']/g, "");
+      let html = `<p>${text.join("</p><p>")}</p>`;
+      return html;
+    },
+    splitMulti(str, tokens) {
+      var tempChar = tokens[0]; // We can use the first token as a temporary join character
+      for (var i = 1; i < tokens.length; i++) {
+        str = str.split(tokens[i]).join(tempChar);
+      }
+      str = str.split(tempChar);
+      return str;
+    },
+    greetings: function() {
+      console.log("Howdy my good fellow!");
+    },
+    formattedSubtitle: function(spell) {
       return (
-        this.formattedLevel +
+        this.formattedLevel(spell) +
         ", " +
-        this.formattedRange +
+        this.formattedRange(spell) +
         ",<br> " +
-        this.formattedDuration +
+        this.formattedDuration(spell) +
         ", " +
-        this.formattedCastingTime +
+        this.formattedCastingTime(spell) +
         "."
       );
     },
-    formattedLevel: function() {
-      return "<strong class='text-danger'>" + this.spell.level + "</strong>";
+    formattedLevel: function(spell) {
+      return "<strong class='text-danger'>" + spell.level + "</strong>";
     },
-    formattedRange: function() {
+    formattedRange: function(spell) {
       return (
         "<strong class='text-info'>Range&nbsp;</strong>" +
-        this.spell.range.replace("feet", "Feet")
+        spell.range.replace("feet", "Feet")
       );
     },
-    formattedDetails: function() {
-      let description = this.formattedDescription;
-      let classes = this.formattedClasses;
-      let components = this.formattedComponents;
+    formattedDetails: function(spell) {
+      let description = this.formattedDescription(spell);
+      let classes = this.formattedClasses(spell);
+      let components = this.formattedComponents(spell);
       return description + classes + components;
     },
-    formattedClasses: function() {
-      // let classArr = this.spell.class;
-      let classArray = this.spell.class.split(",");
+    formattedClasses: function(spell) {
+      // let classArr = spell.class;
+      let classArray = spell.class.split(",");
 
       let classes =
         "<strong>Classes</strong><p>" + classArray.join(", ") + ".</p>";
 
       return classes;
     },
-    formattedDescription: function() {
-      let description = this.convertJsonArrayToHtml(this.spell.desc);
+    formattedDescription: function(spell) {
+      let description = this.convertJsonArrayToHtml(spell.desc);
 
-      if (this.spell.higherLevel) {
+      if (spell.higherLevel) {
         let higherLevel =
           "<strong>At Higher Levels </strong>" +
-          this.convertJsonArrayToHtml(this.spell.higherLevel);
+          this.convertJsonArrayToHtml(spell.higherLevel);
         description += higherLevel;
       }
       return description;
     },
-    formattedDuration: function() {
+    formattedDuration: function(spell) {
       let result = "<strong class='text-warning'>Duration&nbsp;</strong>";
-      if (this.spell.concentration && this.spell.duration.length > 0) {
-        let cleanedDuration = this.spell.duration;
+      if (spell.concentration && spell.duration.length > 0) {
+        let cleanedDuration = spell.duration;
         cleanedDuration = cleanedDuration.replace("Concentration, ", "");
         result += cleanedDuration[0].toUpperCase() + cleanedDuration.slice(1);
       } else {
-        result += this.spell.duration;
+        result += spell.duration;
       }
       return result; // capitalize first letter
     },
-    formattedCastingTime: function() {
+    formattedCastingTime: function(spell) {
       return (
         "<strong class='text-success'>Casting&nbsp;</strong>" +
-        this.spell.castingTime
+        spell.castingTime
       );
     },
-    formattedComponents: function() {
+    formattedComponents: function(spell) {
       let array = [];
-      if (this.spell.components.includes("V")) {
+      if (spell.components.includes("V")) {
         array.push("Verbal");
       }
-      if (this.spell.components.includes("S")) {
+      if (spell.components.includes("S")) {
         array.push("Somatic");
       }
-      if (this.spell.components.includes("M")) {
-        array.push(`Material (${this.spell.material})`);
+      if (spell.components.includes("M")) {
+        array.push(`Material (${spell.material})`);
       }
       if (array.length > 0) {
         return (

@@ -15,7 +15,7 @@
         data-toggle="collapse"
         aria-controls="collapseOne"
       >{{spell.name}}</h4>
-      <h6 class="card-subtitle mb-2 text-muted" v-html="formattedSubtitle"></h6>
+      <h6 class="card-subtitle mb-2 text-muted" v-html="formattedSubtitle(spell)"></h6>
       <span class="badge-shrinker align-middle">
         <b-badge variant="warning" v-if="spell.concentration == true">Concentration</b-badge>
         <b-badge variant="success" v-if="spell.ritual == true">Ritual</b-badge>
@@ -24,10 +24,10 @@
         <b-collapse :id="'descSpell'+spell.index" class="details-text text-justify">
           <br />
           <strong class="text-primary">Description</strong>
-          <span v-html="formattedDescription"></span>
+          <span v-html="formattedDescription(spell)"></span>
           <strong class="text-primary">Classes</strong>
           <p>{{spell.class}}</p>
-          <p v-html="formattedComponents"></p>
+          <p v-html="formattedComponents(spell)"></p>
           <strong class="text-primary">School</strong>
           <p>{{spell.school}}</p>
         </b-collapse>
@@ -37,8 +37,11 @@
 </template>
 
 <script>
+import SpellParser from "./mixins/SpellParser.vue";
+
 export default {
   name: "SpellCard",
+  mixins: [SpellParser],
   props: {
     spell: {
       index: Number,

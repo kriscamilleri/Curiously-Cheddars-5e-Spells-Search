@@ -66,7 +66,6 @@ Filter fixed width when closing
 */
 
 import SpellNavBar from "./SpellNavBar.vue";
-import SpellParser from "./mixins/SpellParser.vue";
 import SpellCard from "./SpellCard.vue";
 import AddSpell from "./AddSpell.vue";
 import Print from "./Print.vue";
@@ -74,7 +73,6 @@ import SpellFilters from "./SpellFilters.vue";
 import FavoritesModal from "./FavoritesModal.vue";
 
 export default {
-  mixins: [SpellParser],
   components: {
     SpellCard,
     // AddSpell,
