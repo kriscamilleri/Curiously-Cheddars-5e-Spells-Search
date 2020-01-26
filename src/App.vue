@@ -3,15 +3,20 @@
     <title>{{spellBookTitle}}</title>
     <meta name="viewport" content="width=device-width, user-scalable=false;" />
 
-    <div class="print-mode" v-if="printView !== true">
-      <print :spells="spells"></print>
+    <div class="print-mode" v-if="printEnabled === true">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="btn btn-danger float-right" @click="printEnabled = false">Quit</div>
+        </div>
+      </div>
+      <print :spells="filteredSpells"></print>
     </div>
     <div v-else>
       <meta name="viewport" content="width=device-width, user-scalable=false;" />
-
       <spell-nav-bar
         @sideBarOn="captureSideBarStatus"
         @searchText="captureSearchText"
+        @printEnabled="capturePrintToggle"
         @spells="spells"
         :navTitle="navTitle"
         :sideBarOn="sideBarOn"
@@ -138,7 +143,7 @@ export default {
         "Necromancy",
         "Transmutation"
       ],
-      printView: false
+      printEnabled: false
     };
   },
   computed: {
@@ -164,6 +169,9 @@ export default {
     }
   },
   methods: {
+    capturePrintToggle(printEnabled) {
+      this.printEnabled = printEnabled;
+    },
     captureSideBarStatus(sideBarOn) {
       this.sideBarOn = sideBarOn;
     },

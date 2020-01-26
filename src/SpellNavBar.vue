@@ -22,6 +22,11 @@
         <!-- <b-nav-item size="sm" class="my-2 mr-4 nav-button btn-secondary" v-b-modal="'spellModal'">Add Spell...</b-nav-item> -->
         <b-nav-item
           size="sm"
+          class="my-2 mr-4 nav-button btn-success"
+          v-on:click="togglePrint"
+        >Print</b-nav-item>
+        <b-nav-item
+          size="sm"
           class="my-2 mr-4 nav-button btn-primary"
           v-b-modal="'favoritesModal'"
         >Spellbook</b-nav-item>
@@ -52,6 +57,11 @@
 <script>
 export default {
   name: "SpellNavBar",
+  data() {
+    return {
+      printEnabled: Boolean
+    };
+  },
   props: {
     sideBarOn: false,
     navTitle: ""
@@ -68,6 +78,11 @@ export default {
     },
     toggleSearch: function() {
       this.$emit("searchText", this.localSearchText);
+    },
+    togglePrint: function() {
+      console.log("print toggled");
+      this.printEnabled = !this.printEnabled;
+      this.$emit("printEnabled", this.printEnabled);
     }
   }
 };
