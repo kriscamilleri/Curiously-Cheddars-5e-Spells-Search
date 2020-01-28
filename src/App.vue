@@ -2,14 +2,13 @@
   <div id="app">
     <title>{{spellBookTitle}}</title>
     <meta name="viewport" content="width=device-width, user-scalable=false;" />
-
     <div class="print-mode" v-if="printEnabled === true">
       <div class="row">
         <div class="col-md-12">
           <div class="btn btn-danger float-right" @click="printEnabled = false">Quit</div>
         </div>
       </div>
-      <print :spells="filteredSpells"></print>
+      <print :spells="spells"></print>
     </div>
     <div v-else>
       <meta name="viewport" content="width=device-width, user-scalable=false;" />
@@ -425,6 +424,26 @@ body {
 #wrapper.toggled #sidebar-wrapper {
   transform: translateX(0vw);
 }
+
+:root {
+  --modal-container-footer: 14rem;
+  --info-footer: 3em;
+  --info-column-gap: 15px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: 400;
+}
 @media (min-width: 768px) {
   #wrapper {
     padding-right: 0;
@@ -443,21 +462,6 @@ body {
   #wrapper.toggled #page-content-wrapper {
     position: relative;
     margin-left: 0;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  .h1,
-  .h2,
-  .h3,
-  .h4,
-  .h5,
-  .h6 {
-    font-weight: 400;
   }
 }
 </style>

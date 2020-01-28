@@ -2,8 +2,8 @@
   <div>
     <div v-for="spell in spells" :key="spell.index">
       <div class="printable text-justify">
-        <div id="infoContainer" class="info-container py-4">
-          <div id="infoSubcontainer" class="info-subcontainer px-3 pb-5 pt-1 align-self-top">
+        <div class="info-container">
+          <div class="info-subcontainer">
             <span class="info-header">
               <h3>{{spell.name}}</h3>
               <h5 v-if="spell.level">Level {{spell.level}} - {{spell.school}}</h5>
@@ -37,9 +37,25 @@ export default {
   methods: {}
 };
 </script>
-<style>
+<style scoped>
+.info-container {
+  margin: 2rem;
+  /* margin: 20px;
+  max-height: fit-content;
+  -webkit-column-width: 20rem;
+  -moz-column-width: 20rem;
+  column-width: 20rem;
+  column-count: 4;
+  break-inside: avoid-page;
+  -moz-column-fill: auto;
+  column-fill: auto;
+  -webkit-column-gap: var(--info-column-gap);
+  -moz-column-gap: var(--info-column-gap);
+  column-gap: var(--info-column-gap);
+  -webkit-column-rule: 1px dotted var(--dark);
+  -moz-column-rule: 1px dotted var(--dark);
+  column-rule: 1px dotted var(--dark); */
+}
 .print-mode {
-  margin: 1.5rem;
-  margin-top: -2.5rem;
 }
 </style>

@@ -463,7 +463,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .max-height {
   height: calc(100% - 3rem);
 }
@@ -476,11 +476,6 @@ export default {
 }
 .modal .badge {
   font-size: 130%;
-}
-:root {
-  --modal-container-footer: 14rem;
-  --info-footer: 3em;
-  --info-column-gap: 15px;
 }
 /* 
 input.form-control {
