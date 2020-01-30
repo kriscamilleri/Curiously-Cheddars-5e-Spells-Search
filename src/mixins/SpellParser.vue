@@ -1,9 +1,6 @@
 <script>
 export default {
   name: "SpellParser",
-  created: function() {
-    this.greetings();
-  },
   props: {
     spell: {
       index: Number,
@@ -37,9 +34,6 @@ export default {
       }
       str = str.split(tempChar);
       return str;
-    },
-    greetings: function() {
-      console.log("Howdy my good fellow!");
     },
     formattedSubtitle: function(spell) {
       return (

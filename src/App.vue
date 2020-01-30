@@ -207,7 +207,6 @@ export default {
       if (this.spellBookFilter.length == 0) {
         return spells;
       }
-      console.log(spells);
 
       const filteredSpells = spells.filter(
         c => this.spellBookFilter.indexOf(parseInt(c.index)) !== -1
@@ -282,7 +281,6 @@ export default {
           return response.json();
         })
         .then(data => {
-          console.log(data);
           this.spells = data.sort((a, b) => {
             const concatA =
               a.level != "Cantrip" ? `${a.level}${a.name}` : `${0}${a.name}`;
