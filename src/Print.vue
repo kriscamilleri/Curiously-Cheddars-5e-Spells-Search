@@ -1,21 +1,25 @@
 <template>
   <div>
-    <div v-for="spell in spells" :key="spell.index">
+    <div v-for="spell in spells" :key="spell.id">
       <div class="printable text-justify">
         <div class="info-container">
           <div class="info-subcontainer">
             <span class="info-header">
               <h3>{{spell.name}}</h3>
-              <h5 v-if="spell.level">Level {{spell.level}} - {{spell.school}}</h5>
-              <small class="text-primary">{{spell.class}}</small>
+              <h5 class="text-primary" v-if="spell.level">
+                {{spell.level}} {{spell.school}}
+                <b-badge variant="warning" v-if="spell.conc == 'true'">conc</b-badge>
+                <b-badge variant="success" v-if="spell.ritual == 'true'">Ritual</b-badge>
+              </h5>
+              <h5>{{spell.class}}</h5>
             </span>
             <span class="extended-description text-justify">
-              <strong v-if="spell.index" class="d-block pt-2 text-primary">Description</strong>
+              <strong v-if="spell.id" class="d-block pt-2 text-primary">Description</strong>
               <span v-html="formattedDescription(spell)"></span>
-              <strong v-if="spell.index" class="text-primary">Classes</strong>
+              <strong v-if="spell.id" class="text-primary">Classes</strong>
               <p>{{spell.class}}</p>
               <p v-html="formattedComponents(spell)"></p>
-              <strong v-if="spell.index" class="text-primary">School</strong>
+              <strong v-if="spell.id" class="text-primary">School</strong>
               <p>{{spell.school}}</p>
             </span>
           </div>
@@ -40,6 +44,7 @@ export default {
 <style scoped>
 .info-container {
   margin: 2rem;
+  page-break-inside: avoid;
   /* margin: 20px;
   max-height: fit-content;
   -webkit-column-width: 20rem;

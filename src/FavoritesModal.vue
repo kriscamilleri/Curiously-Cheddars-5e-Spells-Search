@@ -28,11 +28,11 @@
                 <ul class="list-group list-group-flush">
                   <li
                     class="list-group-item"
-                    :class="selectedSpell.index === spell.index ? 'selected' : ''"
+                    :class="selectedSpell.id === spell.id ? 'selected' : ''"
                     v-for="spell in filteredSpells"
-                    v-on:click="selectSpell(spell.index)"
+                    v-on:click="selectSpell(spell.id)"
                     :spell="spell"
-                    :key="spell.index"
+                    :key="spell.id"
                   >{{spell.name}}</li>
                   <li class="list-group-item" v-if="filteredSpells.length === 0">No spells found.</li>
                 </ul>
@@ -65,8 +65,8 @@
 
                       <span
                         v-for="spell in addedSpells"
-                        v-on:click="removeSpell(spell.index)"
-                        :key="spell.index"
+                        v-on:click="removeSpell(spell.id)"
+                        :key="spell.id"
                         class="btn btn-dark mt-2 mr-2 border-primary border"
                       >
                         <small>Lvl{{selectedSpell.level}}</small>
@@ -99,12 +99,12 @@
                   v-html="extendedDescription"
                 ></div>-->
                 <span class="extended-description text-justify">
-                  <strong v-if="selectedSpell.index" class="d-block pt-2 text-primary">Description</strong>
+                  <strong v-if="selectedSpell.id" class="d-block pt-2 text-primary">Description</strong>
                   <span v-html="formattedDescription"></span>
-                  <strong v-if="selectedSpell.index" class="text-primary">Classes</strong>
+                  <strong v-if="selectedSpell.id" class="text-primary">Classes</strong>
                   <p>{{selectedSpell.class}}</p>
                   <p v-html="formattedComponents"></p>
-                  <strong v-if="selectedSpell.index" class="text-primary">School</strong>
+                  <strong v-if="selectedSpell.id" class="text-primary">School</strong>
                   <p>{{selectedSpell.school}}</p>
                 </span>
               </div>
@@ -125,7 +125,7 @@
                 v-on:click="previousPage()"
               >Previous</span>
               <span
-                :class="selectedSpell.index === undefined ? 'disabled' : ''"
+                :class="selectedSpell.id === undefined ? 'disabled' : ''"
                 class="btn btn-primary align-bottom"
                 v-on:click="addSpell(selectedSpell)"
               >Add Spell</span>
@@ -185,11 +185,9 @@ export default {
       return "<p class='extended-description'></p>";
     },
     generatedLink: function(event) {
-      const spellList = this.addedSpells.map(c => c.index);
+      const spellList = this.addedSpells.map(c => c.id);
       const joinedSpells = spellList.join("-");
-      const url = `${window.location.protocol}//${
-        window.location.host
-      }?spellbookname=${this.spellBookName}&spellbook=${joinedSpells}`;
+      const url = `${window.location.protocol}//${window.location.host}?spellbookname=${this.spellBookName}&spellbook=${joinedSpells}`;
       return url;
     },
     spellBookTitle() {
@@ -205,7 +203,7 @@ export default {
         ",<br> " +
         this.formattedDuration +
         ", " +
-        this.formattedCastingTime +
+        this.formattedcasting +
         "."
       );
     },
@@ -236,35 +234,32 @@ export default {
       return classes;
     },
     formattedDescription: function() {
-      if (this.selectedSpell.index) {
+      if (this.selectedSpell.id) {
         let description = this.convertJsonArrayToHtml(this.selectedSpell.desc);
-        if (this.selectedSpell.higherLevel) {
-          let higherLevel =
+        if (this.selectedSpell.higher) {
+          let higher =
             "<strong>At Higher Levels </strong>" +
-            this.convertJsonArrayToHtml(this.selectedSpell.higherLevel);
-          description += higherLevel;
+            this.convertJsonArrayToHtml(this.selectedSpell.higher);
+          description += higher;
         }
         return description;
       }
     },
     formattedDuration: function() {
       let result = "<strong class='text-warning'>Duration&nbsp;</strong>";
-      if (
-        this.selectedSpell.concentration &&
-        this.selectedSpell.duration.length > 0
-      ) {
+      if (this.selectedSpell.conc && this.selectedSpell.duration.length > 0) {
         let cleanedDuration = this.selectedSpell.duration;
-        cleanedDuration = cleanedDuration.replace("Concentration, ", "");
+        cleanedDuration = cleanedDuration.replace("conc, ", "");
         result += cleanedDuration[0].toUpperCase() + cleanedDuration.slice(1);
       } else {
         result += this.selectedSpell.duration;
       }
       return result; // capitalize first letter
     },
-    formattedCastingTime: function() {
+    formattedcasting: function() {
       return (
         "<strong class='text-success'>Casting&nbsp;</strong>" +
-        this.selectedSpell.castingTime
+        this.selectedSpell.casting
       );
     },
     formattedComponents: function() {
@@ -306,10 +301,10 @@ export default {
     };
   },
   methods: {
-    removeSpell(index) {
+    removeSpell(id) {
       let spells = [];
       for (let i = 0; i < this.addedSpells.length; i++) {
-        if (this.addedSpells[i].index !== index) {
+        if (this.addedSpells[i].id !== id) {
           spells.push(this.addedSpells[i]);
         }
       }
@@ -333,16 +328,16 @@ export default {
     hideModal: function() {
       this.$refs["favoritesModal"].hide();
     },
-    selectSpell: function(index) {
-      this.selectedSpell = this.spells.find(c => c.index === index);
+    selectSpell: function(id) {
+      this.selectedSpell = this.spells.find(c => c.id === id);
       this.resetPage();
     },
     addSpell: function(spell) {
       //disable button when nothing to add
-      if (this.selectedSpell.index === undefined) {
+      if (this.selectedSpell.id === undefined) {
         return;
       }
-      const existingSpell = this.addedSpells.find(x => x.index === spell.index);
+      const existingSpell = this.addedSpells.find(x => x.id === spell.id);
       if (existingSpell === undefined) {
         this.addedSpells.push(spell);
       }
@@ -568,11 +563,6 @@ input.form-control {
 
 .modal {
   padding-right: 0 !important;
-}
-
-.modal-lg {
-  min-width: 100%;
-  margin: 0 !important;
 }
 
 .modal-lg .modal-dialog {

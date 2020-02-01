@@ -3,15 +3,15 @@ export default {
   name: "SpellParser",
   props: {
     spell: {
-      index: Number,
+      id: Number,
       name: String,
       desc: Array,
-      higherLevel: String,
+      higher: String,
       range: String,
       ritual: Boolean,
       duration: String,
-      concentration: Boolean,
-      castingTime: String,
+      conc: Boolean,
+      casting: String,
       level: String,
       school: String,
       class: Array,
@@ -43,7 +43,7 @@ export default {
         ",<br> " +
         this.formattedDuration(spell) +
         ", " +
-        this.formattedCastingTime(spell) +
+        this.formattedcasting(spell) +
         "."
       );
     },
@@ -74,29 +74,28 @@ export default {
     formattedDescription: function(spell) {
       let description = this.convertJsonArrayToHtml(spell.desc);
 
-      if (spell.higherLevel) {
-        let higherLevel =
+      if (spell.higher) {
+        let higher =
           "<strong>At Higher Levels </strong>" +
-          this.convertJsonArrayToHtml(spell.higherLevel);
-        description += higherLevel;
+          this.convertJsonArrayToHtml(spell.higher);
+        description += higher;
       }
       return description;
     },
     formattedDuration: function(spell) {
       let result = "<strong class='text-warning'>Duration&nbsp;</strong>";
-      if (spell.concentration && spell.duration.length > 0) {
+      if (spell.conc && spell.duration.length > 0) {
         let cleanedDuration = spell.duration;
-        cleanedDuration = cleanedDuration.replace("Concentration, ", "");
+        cleanedDuration = cleanedDuration.replace("conc, ", "");
         result += cleanedDuration[0].toUpperCase() + cleanedDuration.slice(1);
       } else {
         result += spell.duration;
       }
       return result; // capitalize first letter
     },
-    formattedCastingTime: function(spell) {
+    formattedcasting: function(spell) {
       return (
-        "<strong class='text-success'>Casting&nbsp;</strong>" +
-        spell.castingTime
+        "<strong class='text-success'>Casting&nbsp;</strong>" + spell.casting
       );
     },
     formattedComponents: function(spell) {

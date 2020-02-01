@@ -59,16 +59,16 @@
           <br />
         </div>
         <div class="col-md-12">
-          <label class="d-block" for="higherLevelsInput">
+          <label class="d-block" for="highersInput">
             <strong>Higher Levels</strong>
           </label>
           <b-input-group left="@" class="mb-2 mr-sm-2 mb-sm-0 max-width-override">
             <textarea
               rows="3"
-              name="higherLevelsInput"
+              name="highersInput"
               max-rows="8"
               class="form-control"
-              id="higherLevelsInput"
+              id="highersInput"
               placeholder="ex. <p>The spell creates one more dart for each slot above 1st.</p>"
             />
           </b-input-group>
@@ -103,11 +103,11 @@
           <br />
         </div>
         <div class="col-md-6">
-          <label class="d-block" for="castingTimeInput">
+          <label class="d-block" for="castingInput">
             <strong>Casting Time</strong>
           </label>
           <b-input-group left="@" class="mb-2 mr-sm-2 mb-sm-0">
-            <b-input id="castingTimeInput" name="castingTimeInput" placeholder="ex. 1 minute" />
+            <b-input id="castingInput" name="castingInput" placeholder="ex. 1 minute" />
           </b-input-group>
           <br />
         </div>
@@ -166,16 +166,16 @@
           <br />
         </div>
         <div class="col-md-6">
-          <label class="d-block" for="concentrationInput">
-            <strong>Concentration</strong>
+          <label class="d-block" for="concInput">
+            <strong>conc</strong>
           </label>
           <b-input-group left="@" class="mb-2 mr-sm-2 mb-sm-0">
             <b-form-select
               class="mb-2 mr-sm-2 mb-sm-0"
               :value="false"
               :options="{ true: 'True', false: 'False' }"
-              id="concentrationInput"
-              name="concentrationInput"
+              id="concInput"
+              name="concInput"
             />
           </b-input-group>
           <br />
@@ -245,11 +245,10 @@ export default {
       let nameInput = document.getElementById("nameInput").value;
       let levelsInput = document.getElementById("levelsInput").value;
       let descInput = document.getElementById("descInput").value;
-      let higherLevelsInput = document.getElementById("higherLevelsInput")
-        .value;
+      let highersInput = document.getElementById("highersInput").value;
       let rangeInput = document.getElementById("rangeInput").value;
       let durationInput = document.getElementById("durationInput").value;
-      let castingTimeInput = document.getElementById("castingTimeInput").value;
+      let castingInput = document.getElementById("castingInput").value;
       let schoolInput = document.getElementById("schoolInput").value;
       let somaticInput = document.getElementById("somaticInput").value;
       let verbalInput = document.getElementById("verbalInput").value;
@@ -258,8 +257,7 @@ export default {
         .value;
       let materialInput = document.getElementById("materialInput").value;
       let pageInput = document.getElementById("pageInput").value;
-      let concentrationInput = document.getElementById("concentrationInput")
-        .value;
+      let concInput = document.getElementById("concInput").value;
       let url = "http://localhost:5000/api/values/addspell";
 
       return fetch(url, {
@@ -268,11 +266,11 @@ export default {
           classInput: classInput,
           nameInput: nameInput,
           descInput: descInput,
-          higherLevelsInput: higherLevelsInput,
+          highersInput: highersInput,
           levelsInput: levelsInput,
           rangeInput: rangeInput,
           durationInput: durationInput,
-          castingTimeInput: castingTimeInput,
+          castingInput: castingInput,
           schoolInput: schoolInput,
           somaticInput: somaticInput,
           verbalInput: verbalInput,
@@ -280,7 +278,7 @@ export default {
           materialCostInput: materialCostInput,
           materialInput: materialInput,
           pageInput: pageInput,
-          concentrationInput: concentrationInput
+          concInput: concInput
         }), // data can be `string` or {object}!
         headers: {
           "Content-Type": "application/json"

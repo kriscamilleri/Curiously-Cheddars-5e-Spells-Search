@@ -38,7 +38,7 @@
         <div id="page-content-wrapper">
           <b-container fluid class="bv-example-row m-1">
             <b-row :class="{ 'd-none': dataLoading }" id="spellContainer" align-h="center">
-              <spell-card v-for="r in filteredSpells" :spell="r" :key="r.index" class="m-2"></spell-card>
+              <spell-card v-for="r in filteredSpells" :spell="r" :key="r.id" class="m-2"></spell-card>
             </b-row>
             <div v-if="dataLoading" class="text-center p-5">
               <h2>Loading data...</h2>
@@ -63,7 +63,7 @@
 Minimal mode
 Fix text to be more obvious
 Size adjustment
-Filter by ritual or concentration
+Filter by ritual or conc
 Expand all cards
 PWA
 Filter fixed width when closing
@@ -158,10 +158,10 @@ export default {
         spells = this.filterSchools(spells);
         this.spellSize = spells.length;
 
-        const firstSpellIndex = (this.currentPage - 1) * this.pageSize;
-        const lastSpellIndex = this.currentPage * this.pageSize;
+        const firstSpellid = (this.currentPage - 1) * this.pageSize;
+        const lastSpellid = this.currentPage * this.pageSize;
 
-        spells = spells.slice(firstSpellIndex, lastSpellIndex);
+        spells = spells.slice(firstSpellid, lastSpellid);
         return spells;
       }
       return [];
@@ -209,7 +209,7 @@ export default {
       }
 
       const filteredSpells = spells.filter(
-        c => this.spellBookFilter.indexOf(parseInt(c.index)) !== -1
+        c => this.spellBookFilter.indexOf(parseInt(c.id)) !== -1
       );
       return filteredSpells;
     },
@@ -310,7 +310,7 @@ export default {
   mounted() {
     let self = this;
     this.parseUrl();
-    const url = "https://www.curiouslycheddar.com/pastebin-3";
+    const url = "https://www.curiouslycheddar.com/pastebin-4";
     this.parseSpells(url);
   }
 };
@@ -363,7 +363,7 @@ body {
 } */
 
 #sidebar-wrapper {
-  z-index: 1029;
+  z-id: 1029;
   position: fixed;
   /* right: 380px; */
   /* width: 400px; */
@@ -428,6 +428,12 @@ body {
   --info-footer: 3em;
   --info-column-gap: 15px;
 }
+
+.modal-lg {
+  min-width: 100%;
+  margin: 0 !important;
+}
+
 h1,
 h2,
 h3,
