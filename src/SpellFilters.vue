@@ -1,7 +1,10 @@
 <template>
   <b-row class="m-2">
     <b-col sm="12">
-      <h3 class="my-2 mt-4">Filters</h3>
+      <h3 class="my-2 mt-4">
+        Filters
+        <span class="btn btn-danger btn-sm float-right" v-on:click="toggleSideBar">X</span>
+      </h3>
     </b-col>
     <b-col sm="12">
       <b-row>
@@ -115,6 +118,62 @@
         ></b-form-checkbox-group>
       </b-form-group>
     </b-col>
+    <b-col sm="12">
+      <b-row>
+        <span class="col-6 align-text-bottom">
+          <strong class="filter-header">Ritual</strong>
+          <hr />
+        </span>
+        <span class="col-6 align-middle pt-2">
+          <label
+            :class="ritualAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
+          >
+            <b-form-checkbox
+              v-model="ritualAllSelected"
+              aria-describedby="selectedRitualFilters"
+              aria-controls="selectedRitualFilters"
+              @change="toggleAllRituals"
+              class
+            >Select All</b-form-checkbox>
+          </label>
+        </span>
+      </b-row>
+      <b-form-group>
+        <b-form-checkbox-group
+          v-model="selectedRitualFilters"
+          class="faux-column row"
+          :options="getRitualOptions"
+        ></b-form-checkbox-group>
+      </b-form-group>
+    </b-col>
+    <b-col sm="12">
+      <b-row>
+        <span class="col-6 align-text-bottom">
+          <strong class="filter-header">Concentration</strong>
+          <hr />
+        </span>
+        <span class="col-6 align-middle pt-2">
+          <label
+            :class="concentrationAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
+          >
+            <b-form-checkbox
+              v-model="concentrationAllSelected"
+              aria-describedby="selectedConcentrationFilters"
+              aria-controls="selectedConcentrationFilters"
+              @change="toggleAllConcentrations"
+              class
+            >Select All</b-form-checkbox>
+          </label>
+        </span>
+      </b-row>
+      <b-form-group>
+        <b-form-checkbox-group
+          v-model="selectedConcentrationFilters"
+          class="faux-column row"
+          :options="getConcentrationOptions"
+        ></b-form-checkbox-group>
+      </b-form-group>
+    </b-col>
   </b-row>
 </template>
 
@@ -125,7 +184,9 @@ export default {
     classFilters: Array,
     sourceFilters: Array,
     levelFilters: Array,
-    schoolFilters: Array
+    schoolFilters: Array,
+    ritualFilters: Array,
+    concentrationFilters: Array
   },
   data: function() {
     return {
@@ -137,10 +198,17 @@ export default {
       selectedSourceFilters: this.sourceFilters,
       localSchoolFilters: this.schoolFilters,
       selectedSchoolFilters: this.schoolFilters,
+      localRitualFilters: this.ritualFilters,
+      selectedRitualFilters: this.ritualFilters,
+      localConcentrationFilters: this.concentrationFilters,
+      selectedConcentrationFilters: this.concentrationFilters,
       classAllSelected: true,
       levelAllSelected: true,
       schoolAllSelected: true,
-      sourceAllSelected: true
+      ritualAllSelected: true,
+      sourceAllSelected: true,
+      concentrationAllSelected: true,
+      ritualAllSelected: true
     };
   },
   computed: {
@@ -189,9 +257,34 @@ export default {
         arr.push(row);
       }
       return arr;
+    },
+    getRitualOptions: function() {
+      let arr = [];
+      for (let i = 0; i < this.localRitualFilters.length; i++) {
+        let row = {
+          text: this.localRitualFilters[i],
+          value: this.localRitualFilters[i]
+        };
+        arr.push(row);
+      }
+      return arr;
+    },
+    getConcentrationOptions: function() {
+      let arr = [];
+      for (let i = 0; i < this.localConcentrationFilters.length; i++) {
+        let row = {
+          text: this.localConcentrationFilters[i],
+          value: this.localConcentrationFilters[i]
+        };
+        arr.push(row);
+      }
+      return arr;
     }
   },
   methods: {
+    toggleSideBar: function() {
+      this.$emit("sideBarOn", false);
+    },
     toggleAllClasses(checked) {
       this.selectedClassFilters = this.classAllSelected
         ? []
@@ -211,6 +304,16 @@ export default {
       this.selectedSourceFilters = this.sourceAllSelected
         ? []
         : this.localSourceFilters;
+    },
+    toggleAllRituals(checked) {
+      this.selectedRitualFilters = this.ritualAllSelected
+        ? []
+        : this.localRitualFilters;
+    },
+    toggleAllConcentrations(checked) {
+      this.selectedConcentrationFilters = this.concentrationAllSelected
+        ? []
+        : this.localConcentrationFilters;
     }
   },
   watch: {
@@ -237,6 +340,19 @@ export default {
         this.selectedSourceFilters.length == this.localSourceFilters.length;
 
       this.$emit("sourceFilters", val);
+    },
+    selectedConcentrationFilters(val) {
+      this.concentrationAllSelected =
+        this.selectedConcentrationFilters.length ==
+        this.localConcentrationFilters.length;
+
+      this.$emit("concentrationFilters", val);
+    },
+    selectedRitualFilters(val) {
+      this.ritualAllSelected =
+        this.selectedRitualFilters.length == this.localRitualFilters.length;
+
+      this.$emit("ritualFilters", val);
     }
   }
 };

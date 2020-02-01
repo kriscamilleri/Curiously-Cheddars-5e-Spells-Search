@@ -5,7 +5,10 @@
     <div class="print-mode" v-if="printEnabled === true">
       <div class="row">
         <div class="col-md-12">
-          <div class="btn btn-danger float-right" @click="printEnabled = false">Quit</div>
+          <div
+            class="btn btn-danger btn-sm float-right print-d-none"
+            @click="printEnabled = false"
+          >X</div>
         </div>
       </div>
       <print :spells="spells"></print>
@@ -23,6 +26,7 @@
       <div id="wrapper" :class="{ toggled: sideBarOn }">
         <div id="sidebar-wrapper" class="bg-light">
           <spell-filters
+            @sideBarOn="captureSideBarStatus"
             :classFilters="classFilters"
             @classFilters="captureClassFilters"
             :levelFilters="levelFilters"
@@ -31,6 +35,10 @@
             @sourceFilters="captureSourceFilters"
             :schoolFilters="schoolFilters"
             @schoolFilters="captureSchoolFilters"
+            :ritualFilters="ritualFilters"
+            @ritualFilters="captureRitualFilters"
+            :concentrationFilters="concentrationFilters"
+            @concentrationFilters="captureConcentrationFilters"
           ></spell-filters>
         </div>
         <!-- <add-spell></add-spell> -->
@@ -120,6 +128,8 @@ export default {
         "Necromancy",
         "Transmutation"
       ],
+      concentrationFilters: ["True", "False"],
+      ritualFilters: ["True", "False"],
       classes: [
         "bard",
         "cleric",
@@ -156,6 +166,8 @@ export default {
         spells = this.filterLevels(spells);
         spells = this.filterSources(spells);
         spells = this.filterSchools(spells);
+        spells = this.filterConcentration(spells);
+        spells = this.filterRitual(spells);
         this.spellSize = spells.length;
 
         const firstSpellid = (this.currentPage - 1) * this.pageSize;
@@ -188,6 +200,14 @@ export default {
     },
     captureSchoolFilters(value) {
       this.schoolFilters = value;
+    },
+
+    captureRitualFilters(value) {
+      this.ritualFilters = value;
+    },
+
+    captureConcentrationFilters(value) {
+      this.concentrationFilters = value;
     },
     filterSearch(spells, searchText) {
       if (searchText.length > 0) {
@@ -272,6 +292,46 @@ export default {
       }
       return spells;
     },
+    filterConcentration(spells) {
+      let concentrationFilters = this.concentrationFilters;
+      if (
+        concentrationFilters.includes("True") &&
+        concentrationFilters.includes("False")
+      ) {
+        return spells;
+      }
+      spells = spells.filter(function(spell) {
+        let x = spell.conc;
+        console.log(x);
+        if (concentrationFilters.includes("True") && spell.conc === true) {
+          return spell;
+        }
+        if (
+          concentrationFilters.includes("False") &&
+          spell.conc === undefined
+        ) {
+          return spell;
+        }
+      });
+      return spells;
+    },
+    filterRitual(spells) {
+      let ritualFilters = this.ritualFilters;
+      if (ritualFilters.includes("True") && ritualFilters.includes("False")) {
+        return spells;
+      }
+      spells = spells.filter(function(spell) {
+        let x = spell.ritual;
+        console.log(x);
+        if (ritualFilters.includes("True") && spell.ritual === true) {
+          return spell;
+        }
+        if (ritualFilters.includes("False") && spell.ritual === undefined) {
+          return spell;
+        }
+      });
+      return spells;
+    },
     parseSpells(url) {
       fetch(url)
         .then(response => {
@@ -322,6 +382,11 @@ export default {
     column-break-inside: avoid;
   }*/
 
+@media print {
+  .print-d-none {
+    display: none;
+  }
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -363,7 +428,7 @@ body {
 } */
 
 #sidebar-wrapper {
-  z-id: 1029;
+  z-index: 1029;
   position: fixed;
   /* right: 380px; */
   /* width: 400px; */
@@ -421,6 +486,7 @@ body {
 }
 #wrapper.toggled #sidebar-wrapper {
   transform: translateX(0vw);
+  height: calc(100vh - 5rem);
 }
 
 :root {

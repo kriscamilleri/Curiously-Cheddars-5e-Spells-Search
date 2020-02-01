@@ -17,8 +17,8 @@
       >{{spell.name}}</h4>
       <h6 class="card-subtitle mb-2 text-muted" v-html="formattedSubtitle(spell)"></h6>
       <span class="badge-shrinker align-middle">
-        <b-badge variant="warning" v-if="spell.conc == 'true'">conc</b-badge>
-        <b-badge variant="success" v-if="spell.ritual == 'true'">Ritual</b-badge>
+        <b-badge variant="warning" v-if="spell.conc == true">Concentration</b-badge>
+        <b-badge variant="success" v-if="spell.ritual == true">Ritual</b-badge>
       </span>
       <p class="card-text text-sm text-muted" align-h="start">
         <b-collapse :id="'descSpell'+spell.id" class="details-text text-justify">

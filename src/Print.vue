@@ -6,11 +6,11 @@
           <div class="info-subcontainer">
             <span class="info-header">
               <h3>{{spell.name}}</h3>
-              <h5 class="text-primary" v-if="spell.level">
-                {{spell.level}} {{spell.school}}
-                <b-badge variant="warning" v-if="spell.conc == 'true'">conc</b-badge>
-                <b-badge variant="success" v-if="spell.ritual == 'true'">Ritual</b-badge>
-              </h5>
+              <span class="float-right">
+                <b-badge variant="warning" v-if="spell.conc === true">Concentration</b-badge>
+                <b-badge variant="success" v-if="spell.ritual === true">Ritual</b-badge>
+              </span>
+              <h5 class="text-primary" v-if="spell.level">{{spell.level}} {{spell.school}}</h5>
               <h5>{{spell.class}}</h5>
             </span>
             <span class="extended-description text-justify">
