@@ -3,177 +3,183 @@
     <b-col sm="12">
       <h3 class="my-2 mt-4">
         Filters
-        <span class="btn btn-danger btn-sm float-right" v-on:click="toggleSideBar">X</span>
+        <span
+          class="btn btn-danger btn-sm float-right"
+          id="closeSidebar"
+          v-on:click="toggleSideBar"
+        >X</span>
       </h3>
     </b-col>
-    <b-col sm="12">
-      <b-row>
-        <span class="col-6 align-text-bottom">
-          <strong class="filter-header">Class</strong>
-          <hr />
-        </span>
-        <span class="col-6 align-middle pt-2">
-          <label
-            :class="classAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
-          >
-            <b-form-checkbox
-              v-model="classAllSelected"
-              aria-describedby="selectedClassFilters"
-              aria-controls="selectedClassFilters"
-              @change="toggleAllClasses"
-              class
-            >Select All</b-form-checkbox>
-          </label>
-        </span>
-      </b-row>
-      <b-form-group>
-        <b-form-checkbox-group
-          v-model="selectedClassFilters"
-          class="faux-column row"
-          :options="getClassOptions"
-        ></b-form-checkbox-group>
-      </b-form-group>
-    </b-col>
-    <b-col sm="12">
-      <b-row>
-        <span class="col-6 align-text-bottom">
-          <strong class="filter-header">Level</strong>
-          <hr />
-        </span>
-        <span class="col-6 align-middle pt-2">
-          <label
-            :class="levelAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
-          >
-            <b-form-checkbox
-              v-model="levelAllSelected"
-              aria-describedby="selectedLevelFilters"
-              aria-controls="selectedLevelFilters"
-              @change="toggleAllLevels"
-              class
-            >Select All</b-form-checkbox>
-          </label>
-        </span>
-      </b-row>
-      <b-form-group>
-        <b-form-checkbox-group
-          v-model="selectedLevelFilters"
-          class="faux-column row"
-          :options="getLevelOptions"
-        ></b-form-checkbox-group>
-      </b-form-group>
-    </b-col>
-    <b-col sm="12">
-      <b-row>
-        <span class="col-6 align-text-bottom">
-          <strong class="filter-header">School</strong>
-          <hr />
-        </span>
-        <span class="col-6 align-middle pt-2">
-          <label
-            :class="schoolAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
-          >
-            <b-form-checkbox
-              v-model="schoolAllSelected"
-              aria-describedby="selectedSchoolFilters"
-              aria-controls="selectedSchoolFilters"
-              @change="toggleAllSchools"
-              class
-            >Select All</b-form-checkbox>
-          </label>
-        </span>
-      </b-row>
-      <b-form-group>
-        <b-form-checkbox-group
-          v-model="selectedSchoolFilters"
-          class="faux-column row"
-          :options="getSchoolOptions"
-        ></b-form-checkbox-group>
-      </b-form-group>
-    </b-col>
-    <b-col sm="12">
-      <b-row>
-        <span class="col-6 align-text-bottom">
-          <strong class="filter-header">Source</strong>
-          <hr />
-        </span>
-        <span class="col-6 align-middle pt-2">
-          <label
-            :class="sourceAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
-          >
-            <b-form-checkbox
-              v-model="sourceAllSelected"
-              aria-describedby="selectedSourceFilters"
-              aria-controls="selectedSourceFilters"
-              @change="toggleAllSources"
-              class
-            >Select All</b-form-checkbox>
-          </label>
-        </span>
-      </b-row>
-      <b-form-group>
-        <b-form-checkbox-group
-          v-model="selectedSourceFilters"
-          class="faux-column row"
-          :options="getSourceOptions"
-        ></b-form-checkbox-group>
-      </b-form-group>
-    </b-col>
-    <b-col sm="12">
-      <b-row>
-        <span class="col-6 align-text-bottom">
-          <strong class="filter-header">Ritual</strong>
-          <hr />
-        </span>
-        <span class="col-6 align-middle pt-2">
-          <label
-            :class="ritualAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
-          >
-            <b-form-checkbox
-              v-model="ritualAllSelected"
-              aria-describedby="selectedRitualFilters"
-              aria-controls="selectedRitualFilters"
-              @change="toggleAllRituals"
-              class
-            >Select All</b-form-checkbox>
-          </label>
-        </span>
-      </b-row>
-      <b-form-group>
-        <b-form-checkbox-group
-          v-model="selectedRitualFilters"
-          class="faux-column row"
-          :options="getRitualOptions"
-        ></b-form-checkbox-group>
-      </b-form-group>
-    </b-col>
-    <b-col sm="12">
-      <b-row>
-        <span class="col-6 align-text-bottom">
-          <strong class="filter-header">Concentration</strong>
-          <hr />
-        </span>
-        <span class="col-6 align-middle pt-2">
-          <label
-            :class="concentrationAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
-          >
-            <b-form-checkbox
-              v-model="concentrationAllSelected"
-              aria-describedby="selectedConcentrationFilters"
-              aria-controls="selectedConcentrationFilters"
-              @change="toggleAllConcentrations"
-              class
-            >Select All</b-form-checkbox>
-          </label>
-        </span>
-      </b-row>
-      <b-form-group>
-        <b-form-checkbox-group
-          v-model="selectedConcentrationFilters"
-          class="faux-column row"
-          :options="getConcentrationOptions"
-        ></b-form-checkbox-group>
-      </b-form-group>
-    </b-col>
+    <div class="scroll-container">
+      <b-col sm="12">
+        <b-row>
+          <span class="col-6 align-text-bottom">
+            <strong class="filter-header">Class</strong>
+            <hr />
+          </span>
+          <span class="col-6 align-middle pt-2">
+            <label
+              :class="classAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
+            >
+              <b-form-checkbox
+                v-model="classAllSelected"
+                aria-describedby="selectedClassFilters"
+                aria-controls="selectedClassFilters"
+                @change="toggleAllClasses"
+                class
+              >Select All</b-form-checkbox>
+            </label>
+          </span>
+        </b-row>
+        <b-form-group>
+          <b-form-checkbox-group
+            v-model="selectedClassFilters"
+            class="faux-column row"
+            :options="getClassOptions"
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
+      <b-col sm="12">
+        <b-row>
+          <span class="col-6 align-text-bottom">
+            <strong class="filter-header">Level</strong>
+            <hr />
+          </span>
+          <span class="col-6 align-middle pt-2">
+            <label
+              :class="levelAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
+            >
+              <b-form-checkbox
+                v-model="levelAllSelected"
+                aria-describedby="selectedLevelFilters"
+                aria-controls="selectedLevelFilters"
+                @change="toggleAllLevels"
+                class
+              >Select All</b-form-checkbox>
+            </label>
+          </span>
+        </b-row>
+        <b-form-group>
+          <b-form-checkbox-group
+            v-model="selectedLevelFilters"
+            class="faux-column row"
+            :options="getLevelOptions"
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
+      <b-col sm="12">
+        <b-row>
+          <span class="col-6 align-text-bottom">
+            <strong class="filter-header">School</strong>
+            <hr />
+          </span>
+          <span class="col-6 align-middle pt-2">
+            <label
+              :class="schoolAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
+            >
+              <b-form-checkbox
+                v-model="schoolAllSelected"
+                aria-describedby="selectedSchoolFilters"
+                aria-controls="selectedSchoolFilters"
+                @change="toggleAllSchools"
+                class
+              >Select All</b-form-checkbox>
+            </label>
+          </span>
+        </b-row>
+        <b-form-group>
+          <b-form-checkbox-group
+            v-model="selectedSchoolFilters"
+            class="faux-column row"
+            :options="getSchoolOptions"
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
+      <b-col sm="12">
+        <b-row>
+          <span class="col-6 align-text-bottom">
+            <strong class="filter-header">Source</strong>
+            <hr />
+          </span>
+          <span class="col-6 align-middle pt-2">
+            <label
+              :class="sourceAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
+            >
+              <b-form-checkbox
+                v-model="sourceAllSelected"
+                aria-describedby="selectedSourceFilters"
+                aria-controls="selectedSourceFilters"
+                @change="toggleAllSources"
+                class
+              >Select All</b-form-checkbox>
+            </label>
+          </span>
+        </b-row>
+        <b-form-group>
+          <b-form-checkbox-group
+            v-model="selectedSourceFilters"
+            class="faux-column row"
+            :options="getSourceOptions"
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
+      <b-col sm="12">
+        <b-row>
+          <span class="col-6 align-text-bottom">
+            <strong class="filter-header">Ritual</strong>
+            <hr />
+          </span>
+          <span class="col-6 align-middle pt-2">
+            <label
+              :class="ritualAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
+            >
+              <b-form-checkbox
+                v-model="ritualAllSelected"
+                aria-describedby="selectedRitualFilters"
+                aria-controls="selectedRitualFilters"
+                @change="toggleAllRituals"
+                class
+              >Select All</b-form-checkbox>
+            </label>
+          </span>
+        </b-row>
+        <b-form-group>
+          <b-form-checkbox-group
+            v-model="selectedRitualFilters"
+            class="faux-column row"
+            :options="getRitualOptions"
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
+      <b-col sm="12">
+        <b-row>
+          <span class="col-6 align-text-bottom">
+            <strong class="filter-header">Concentration</strong>
+            <hr />
+          </span>
+          <span class="col-6 align-middle pt-2">
+            <label
+              :class="concentrationAllSelected ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'"
+            >
+              <b-form-checkbox
+                v-model="concentrationAllSelected"
+                aria-describedby="selectedConcentrationFilters"
+                aria-controls="selectedConcentrationFilters"
+                @change="toggleAllConcentrations"
+                class
+              >Select All</b-form-checkbox>
+            </label>
+          </span>
+        </b-row>
+        <b-form-group>
+          <b-form-checkbox-group
+            v-model="selectedConcentrationFilters"
+            class="faux-column row"
+            :options="getConcentrationOptions"
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
+    </div>
   </b-row>
 </template>
 
@@ -373,5 +379,8 @@ export default {
 }
 .faux-column.row .custom-control {
   margin-right: 0px;
+}
+#closeSidebar {
+  /* position: fixed; */
 }
 </style>

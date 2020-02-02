@@ -23,7 +23,7 @@
         :navTitle="navTitle"
         :sideBarOn="sideBarOn"
       ></spell-nav-bar>
-      <div id="wrapper" :class="{ toggled: sideBarOn }">
+      <div id="wrapper" :class="{ toggled: sideBarOn }" class="pt-2">
         <div id="sidebar-wrapper" class="bg-light">
           <spell-filters
             @sideBarOn="captureSideBarStatus"
@@ -381,7 +381,17 @@ export default {
     display: inline-block;
     column-break-inside: avoid;
   }*/
+.modal.fade .modal-dialog {
+  -webkit-transition: all 0.125s ease-in-out;
+  -moz-transition: all 0.125s ease-in-out;
+  transition: all 0.125s ease-in-out;
+}
 
+.modal.fade.in .modal-dialog {
+  -webkit-transition: all 3s ease;
+  -moz-transition: all 3s ease;
+  transition: all 3s ease;
+}
 @media print {
   .print-d-none {
     display: none;
@@ -412,7 +422,7 @@ a {
 /* SIDEBAR */
 body {
   overflow-x: hidden;
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 #wrapper {
@@ -495,9 +505,9 @@ body {
   --info-column-gap: 15px;
 }
 
-.modal-lg {
-  min-width: 100%;
-  margin: 0 !important;
+.modal-xl {
+  min-width: 95%;
+  /* margin: 5% !important; */
 }
 
 h1,

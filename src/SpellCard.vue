@@ -9,6 +9,7 @@
       :border-variant="classColor"
       header-bg-variant="primary"
       header-text-variant="white"
+      v-b-modal="'descSpell'+spell.id"
     >
       <h4
         class="card-title text-primary"
@@ -21,16 +22,31 @@
         <b-badge variant="success" v-if="spell.ritual == true">Ritual</b-badge>
       </span>
       <p class="card-text text-sm text-muted" align-h="start">
-        <b-collapse :id="'descSpell'+spell.id" class="details-text text-justify">
-          <br />
-          <strong class="text-primary">Description</strong>
-          <span v-html="formattedDescription(spell)"></span>
-          <strong class="text-primary">Classes</strong>
+        <!-- <b-modal
+         :id="'descSpell'+spell.id"
+        class="details-text text-justify">-->
+        <b-modal
+          size="lg"
+          :id="'descSpell'+spell.id"
+          class="details-text text-justify"
+          :title="spell.name"
+        >
+          <div class="modal-stats">
+            <span class="badge-shrinker float-right">
+              <b-badge variant="warning" v-if="spell.conc == true">Concentration</b-badge>
+              <b-badge variant="success" v-if="spell.ritual == true">Ritual</b-badge>
+            </span>
+            <h6 class="card-subtitle mb-2 text-muted" v-html="formattedSubtitle(spell)"></h6>
+          </div>
+          <div class="text-primary">Description</div>
+          <span class="text-justify" v-html="formattedDescription(spell)"></span>
+          <div class="text-primary">Classes</div>
           <p>{{spell.class}}</p>
+          <div class="text-primary">Components</div>
           <p v-html="formattedComponents(spell)"></p>
-          <strong class="text-primary">School</strong>
+          <div class="text-primary">School</div>
           <p>{{spell.school}}</p>
-        </b-collapse>
+        </b-modal>
       </p>
     </b-card>
   </div>
@@ -88,12 +104,24 @@ export default {
 //Stacked progress bar to denote spell class requirement
 </script>
 <style>
+.modal-stats {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 15px;
+  margin-top: -17px;
+  margin-bottom: 15px;
+  background-color: #f8f9fa;
+}
+h6 {
+  font-size: 1.15rem;
+  line-height: 1.65rem;
+}
 .details-text {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 }
 
 .component-text {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .badge-shrinker {
@@ -110,7 +138,7 @@ export default {
 
 .card {
   cursor: pointer;
-  min-height: 160px;
+  min-height: 190px;
   min-width: 18rem;
   max-width: 18rem;
 }

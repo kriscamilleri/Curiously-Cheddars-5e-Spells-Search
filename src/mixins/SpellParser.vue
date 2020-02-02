@@ -110,11 +110,7 @@ export default {
         array.push(`Material (${spell.material})`);
       }
       if (array.length > 0) {
-        return (
-          "<strong class='text-primary'>Components</strong><p>" +
-          array.join(", ") +
-          "</p>"
-        );
+        return "<p>" + array.join(", ") + "</p>";
       }
       return "";
     }

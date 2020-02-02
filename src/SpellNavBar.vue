@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="md" type="light" variant="white" class="bg-light fixed-top">
+  <b-navbar toggleable="md" type="light" variant="white" class="bg-light shadow-sm fixed-top">
     <b-navbar-brand class="mega-brand" href="#">{{navTitle}}</b-navbar-brand>
     <b-form-input
       size="md"

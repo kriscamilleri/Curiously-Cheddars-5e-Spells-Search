@@ -3,7 +3,7 @@
     <b-modal
       title="Create Spellbook"
       id="favoritesModal"
-      size="lg"
+      size="xl"
       method="post"
       ref="favoritesModal"
     >
@@ -103,6 +103,7 @@
                   <span v-html="formattedDescription"></span>
                   <strong v-if="selectedSpell.id" class="text-primary">Classes</strong>
                   <p>{{selectedSpell.class}}</p>
+                  <strong v-if="selectedSpell.id" class="text-primary">Components</strong>
                   <p v-html="formattedComponents"></p>
                   <strong v-if="selectedSpell.id" class="text-primary">School</strong>
                   <p>{{selectedSpell.school}}</p>
@@ -275,11 +276,7 @@ export default {
           array.push(`Material (${this.selectedSpell.material})`);
         }
         if (array.length > 0) {
-          return (
-            "<strong class='text-primary'>Components</strong><p>" +
-            array.join(", ") +
-            "</p>"
-          );
+          return "<p>" + array.join(", ") + "</p>";
         }
       }
       return "";
