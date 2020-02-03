@@ -76,7 +76,7 @@ export default {
 
       if (spell.higher) {
         let higher =
-          "<strong>At Higher Levels </strong>" +
+          "<span class='text-muted'>At Higher Levels </span>" +
           this.convertJsonArrayToHtml(spell.higher);
         description += higher;
       }

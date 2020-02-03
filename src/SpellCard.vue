@@ -26,6 +26,7 @@
          :id="'descSpell'+spell.id"
         class="details-text text-justify">-->
         <b-modal
+          hide-footer
           size="lg"
           :id="'descSpell'+spell.id"
           class="details-text text-justify"
@@ -149,7 +150,7 @@ h6 {
 }
 
 .card:active {
-  animation: 0.1s clickCard;
+  animation: 0.2s clickCard;
 }
 
 @keyframes clickCard {
@@ -160,6 +161,10 @@ h6 {
   100% {
     transform: scale(1);
     transform: translateY(0.125rem);
+  }
+  0% {
+    transform: scale(1.05);
+    transform: translateY(0);
   }
 }
 .navbar-brand {
