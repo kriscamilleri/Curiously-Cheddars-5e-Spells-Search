@@ -36,7 +36,7 @@
               <b-badge variant="warning" v-if="spell.conc == true">Concentration</b-badge>
               <b-badge variant="success" v-if="spell.ritual == true">Ritual</b-badge>
             </span>
-            <h6 class="card-subtitle mb-2 text-muted" v-html="formattedSubtitle(spell)"></h6>
+            <h6 class="card-subtitle text-muted" v-html="formattedSubtitle(spell)"></h6>
           </div>
           <div class="text-primary">Description</div>
           <span class="text-justify" v-html="formattedDescription(spell)"></span>
@@ -141,6 +141,26 @@ h6 {
   min-height: 190px;
   min-width: 18rem;
   max-width: 18rem;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: 0.1s ease-in-out;
+}
+
+.card:active {
+  animation: 0.1s clickCard;
+}
+
+@keyframes clickCard {
+  0% {
+    transform: scale(1.05);
+    transform: translateY(0);
+  }
+  100% {
+    transform: scale(1);
+    transform: translateY(0.125rem);
+  }
 }
 .navbar-brand {
   margin-right: 0.5rem;
