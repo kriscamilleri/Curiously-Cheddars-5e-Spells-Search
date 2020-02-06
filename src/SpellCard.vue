@@ -146,13 +146,13 @@ h6 {
   transition: all 0.3s;
 }
 .card:hover {
-  box-shadow: 0px 15px 25px -5px #0057ab;
   -webkit-transform: scale(1.03);
   transform: scale(1.03);
+  box-shadow: 0 0.5rem 1rem rgba(72, 72, 72, 0.25) !important;
 }
 
 .card:active {
-  box-shadow: 0px 4px 8px #0065c8;
+  box-shadow: 0 0.5rem 1rem rgba(72, 72, 72, 0.25) !important;
   -webkit-transform: scale(0.98);
   transform: scale(0.98);
 }
