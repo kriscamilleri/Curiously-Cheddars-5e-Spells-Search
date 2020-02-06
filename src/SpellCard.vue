@@ -142,8 +142,21 @@ h6 {
   min-height: 190px;
   min-width: 18rem;
   max-width: 18rem;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.card:hover {
+  box-shadow: 0px 15px 25px -5px #0057ab;
+  -webkit-transform: scale(1.03);
+  transform: scale(1.03);
 }
 
+.card:active {
+  box-shadow: 0px 4px 8px #0065c8;
+  -webkit-transform: scale(0.98);
+  transform: scale(0.98);
+}
+/* 
 .card:hover {
   transform: scale(1.05);
   transition: 0.1s ease-in-out;
@@ -166,7 +179,7 @@ h6 {
     transform: scale(1.05);
     transform: translateY(0);
   }
-}
+} */
 .navbar-brand {
   margin-right: 0.5rem;
 }
